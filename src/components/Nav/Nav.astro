@@ -1,0 +1,50 @@
+---
+import logo from "@assets/logo_small.svg";
+import cx from "classnames";
+
+const { pathname } = Astro.url;
+
+const navLinks = [
+    { text: "Home", href: "/" },
+    { text: "Wood", href: "/" },
+    { text: "3D Prints", href: "/" },
+];
+---
+
+<nav
+    class={cx(
+        "bg-white w-max h-[100vh] p-4",
+        "sticky top-0 left-0",
+        "flex flex-col justify-start items-center gap-5",
+        "text-sm"
+    )}
+>
+    <img src={logo} class={cx("w-16 h-auto")} />
+
+    <hr class="w-full" />
+
+    <ul class="grow flex flex-col gap-3 justify-start items-center">
+        {
+            navLinks.map(({ text, href }) => (
+                <li>
+                    <a class="relative group w-max" href={href}>
+                        {text}
+                        <span
+                            class={cx(
+                                "absolute bottom-[2px] left-0 w-0 h-1 bg-red-200 opacity-70",
+                                "group-hover:-bottom-[2px] transition-all -z-10",
+                                "rounded-md",
+                                { "w-full": pathname === href }
+                            )}
+                        />
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+
+    <ul>
+        <li>contact</li>
+        <li>about</li>
+    </ul>
+</nav>
