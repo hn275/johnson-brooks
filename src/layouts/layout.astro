@@ -2,6 +2,7 @@
 import { CgMenuLeftAlt } from "react-icons/cg";
 import { Cart } from "@components/Nav/Cart.tsx";
 import { SmallLogo } from "@components/Nav/SmallLogo";
+import { FaInstagram, FaFacebook } from "react-icons/fa";
 import cx from "classnames";
 
 type NavLinks = { text: string; href: string };
@@ -83,9 +84,30 @@ const navLinks: NavLinks[] = [
       </div>
     </div>
 
-    <main class="grow">
+    <main class="grow py-10">
       <slot />
     </main>
+
+    <footer
+      class="flex justify-between items-center p-3 bg-white text-sm text-slate-500"
+    >
+      <p>Johnson and Brooks &#169; | 2023</p>
+
+      <div class="flex gap-3">
+        <a target="_blank">
+          <FaInstagram
+            className="cursor-pointer text-inherit"
+            title="instagram"
+          />
+        </a>
+        <a target="_blank">
+          <FaFacebook
+            className="cursor-pointer text-inherit"
+            title="facebook"
+          />
+        </a>
+      </div>
+    </footer>
   </section>
 </div>
 
