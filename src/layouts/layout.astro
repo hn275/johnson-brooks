@@ -1,0 +1,91 @@
+---
+import logo from "@assets/logo_small.svg";
+import cx from "classnames";
+import { Icon } from "astro-icon";
+const navLinks = [
+    { text: "Home", href: "/" },
+    { text: "Wood", href: "/" },
+    { text: "3D Prints", href: "/" },
+];
+---
+
+<div class="flex md:flex-col">
+    <nav
+        class={cx("w-0 overflow-clip transition-all", "bg-white", "md:w-full")}
+    >
+        <div
+            class={cx(
+                "p-8 pt-10 grow h-full flex flex-col md:flex-row",
+                "md:p-6"
+            )}
+        >
+            <div class={cx("whitespace-nowrap grow", "md:flex gap-5")}>
+                <img
+                    class="hidden md:block w-16"
+                    src={logo}
+                    alt="Johnson and Brookes"
+                />
+                <ul class="flex flex-col gap-3 md:flex-row md:items-center">
+                    {
+                        navLinks.map(({ text, href }) => (
+                            <li>
+                                <a class="relative group w-max" href={href}>
+                                    {text}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+
+            <div class="flex gap-5">
+                <ul class="flex flex-col gap-3 md:flex-row">
+                    <li>contact</li>
+                    <li>about</li>
+                </ul>
+
+                <a href="">
+                    <Icon name="ph:shopping-cart-light" class="w-6" />
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="h-[100vh] overflow-y-scroll" id="content">
+        <div
+            class={cx(
+                "flex justify-between items-center md:hidden p-4 bg-white",
+                "sticky top-0"
+            )}
+        >
+            <button id="menu-toggler">
+                <Icon pack="gg" name="menu-left-alt" class="w-6" />
+            </button>
+
+            <img src={logo} class={cx("w-16 h-auto")} />
+
+            <div>
+                <ul>
+                    <li><a href=""></a></li>
+                    <li>
+                        <a href="">
+                            <Icon name="ph:shopping-cart-light" class="w-6" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <main {...Astro.props}>
+            <slot />
+        </main>
+    </section>
+</div>
+
+<script>
+    const menuBtn = document.getElementById("menu-toggler")!;
+    const nav = document.querySelector("nav")!;
+    menuBtn.addEventListener("click", () => {
+        nav.classList.toggle("w-32");
+    });
+</script>

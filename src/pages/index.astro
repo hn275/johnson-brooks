@@ -1,8 +1,29 @@
 ---
 import Html from "@layouts/html.astro";
-import Nav from "@components/Nav/Nav.astro";
+import HangBoard from "@assets/home/hangboard.jpg";
+import WoodShop from "@assets/home/wood_shop.jpg";
+import Logo from "@assets/logo.png";
+import cx from "classnames";
+import Layout from "@layouts/layout.astro";
+
+const navLinks = [
+	{ text: "Climbing", href: "/", src: HangBoard },
+	{ text: "Wood shop", href: "/", src: WoodShop },
+];
 ---
 
-<Html title="world">
-	<Nav client:load />
+<Html title="Johnson and Brooks">
+	<Layout class="flex flex-col justify-center items-center gap-10">
+		<img src={Logo} alt="Johnson and Brooks" class="w-1/3" />
+
+		<ul class={cx("flex justify-center items-center flex-wrap gap-5")}>
+			{
+				navLinks.map(({ text, href, src }) => (
+					<li class="w-60 md:w-72 lg:w-96">
+						<img src={src} alt={text} class="w-full" />
+					</li>
+				))
+			}
+		</ul>
+	</Layout>
 </Html>
