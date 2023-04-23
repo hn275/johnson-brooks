@@ -4,10 +4,17 @@ import { Cart } from "@components/Nav/Cart.tsx";
 import { SmallLogo } from "@components/Nav/SmallLogo";
 import cx from "classnames";
 
-const navLinks = [
-  { text: "Climbing", href: "/" },
-  { text: "Wood shop", href: "/" },
-  { text: "3D Prints", href: "/" },
+type NavLinks = { text: string; href: string };
+
+const services: NavLinks[] = [
+  { text: "Climbing", href: "/climbing" },
+  { text: "Wood shop", href: "/woodshop" },
+  { text: "3D Prints", href: "/printing" },
+];
+
+const navLinks: NavLinks[] = [
+  { text: "Contact", href: "/contact" },
+  { text: "About", href: "/about" },
 ];
 ---
 
@@ -26,7 +33,7 @@ const navLinks = [
 
         <ul class="flex flex-col gap-3 md:flex-row md:items-center">
           {
-            navLinks.map(({ text, href }) => (
+            services.map(({ text, href }) => (
               <li>
                 <a class="relative group w-max" href={href}>
                   {text}
@@ -39,8 +46,13 @@ const navLinks = [
 
       <div class="flex gap-5 items-center">
         <ul class="flex flex-col gap-3 md:flex-row">
-          <li><a href="">Contact</a></li>
-          <li><a href="">About</a></li>
+          {
+            navLinks.map(({ text, href }) => (
+              <li>
+                <a href={href}>{text}</a>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
