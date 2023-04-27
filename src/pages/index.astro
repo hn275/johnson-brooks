@@ -1,37 +1,11 @@
 ---
 import Html from "@layouts/html.astro";
-import HangBoard from "@assets/home/hangboard.jpg";
-import WoodShop from "@assets/home/wood_shop.jpg";
-import Logo from "@assets/logo.png";
-import cx from "classnames";
 import Layout from "@layouts/layout.astro";
-
-const navLinks = [
-  { text: "Climbing", href: "/", src: HangBoard },
-  { text: "Wood shop", href: "/", src: WoodShop },
-];
+import Home from "@modules/home/Home.view.tsx";
 ---
 
 <Html title="Johnson and Brooks">
   <Layout>
-    <div class="h-full flex flex-col justify-center items-center gap-10">
-      <img
-        src={Logo}
-        alt="Johnson and Brooks"
-        class="w-36 md:w-72 h-auto mx-auto"
-      />
-
-      <div class="">
-        <ul class={cx("flex justify-center flex-wrap items-center gap-5")}>
-          {
-            navLinks.map(({ text, href, src }) => (
-              <li class="w-60 md:w-72 lg:w-96">
-                <img src={src} alt={text} class="w-full" />
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
+    <Home />
   </Layout>
 </Html>

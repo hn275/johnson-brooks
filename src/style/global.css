@@ -5,3 +5,18 @@
 a {
   @apply hover:underline;
 }
+
+@layer utilities {
+  .bg-accent {
+    @apply bg-slate-900;
+  }
+
+  .fg-accent {
+    @apply text-slate-900;
+  }
+
+  .btn {
+    @apply px-3 py-2 uppercase;
+    @apply bg-slate-900 text-white;
+  }
+}
