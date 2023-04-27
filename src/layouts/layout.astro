@@ -21,7 +21,12 @@ const navLinks: NavLinks[] = [
 
 <div class="flex md:flex-col h-[100vh] overflow-y-scroll">
   <nav
-    class={cx("w-0 overflow-clip transition-all", "sticky top-0", "md:w-full")}
+    class={cx(
+      "w-0 overflow-clip transition-all",
+      "sticky top-0 z-50",
+      "md:w-full",
+      "shadow"
+    )}
   >
     <div
       class={cx(
