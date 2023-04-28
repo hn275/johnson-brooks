@@ -3,6 +3,7 @@ import { CgMenuLeftAlt } from "react-icons/cg";
 import { Cart } from "@components/Nav/Cart.tsx";
 import { SmallLogo } from "@components/Nav/SmallLogo";
 import { FaInstagram, FaFacebook } from "react-icons/fa";
+import { MdClose } from "react-icons/md";
 import cx from "classnames";
 
 type NavLinks = { text: string; href: string };
@@ -21,113 +22,115 @@ const navLinks: NavLinks[] = [
 
 <nav
   class={cx(
-    "w-0 overflow-clip transition-all",
-    "sticky top-0 left-0 z-50",
-    "md:w-full",
-    "shadow bg-white",
-    "flex justify-center items-center"
+    "fixed top-0 left-0 md:block",
+    "shadow z-[999] h-full w-full isolate",
+    "transition-transform -translate-x-full",
+    "md:translate-x-0 md:h-16"
   )}
 >
   <div
     class={cx(
-      "p-8 pt-20 grow h-full flex flex-col md:flex-row",
-      "md:p-6",
-      "max-w-7xl"
+      "bg-white w-max h-full p-10 pt-16",
+      "flex flex-col justify-between z-[999] relative",
+      "md:flex-row justify-between items-center md:w-full md:h-full"
     )}
   >
-    <div class={cx("whitespace-nowrap grow", "md:flex gap-5")}>
-      <SmallLogo className="hidden md:block w-16" />
+    <SmallLogo className="hidden md:block w-16" />
 
-      <ul class="flex flex-col gap-3 md:flex-row md:items-center">
-        {
-          services.map(({ text, href }) => (
-            <li>
-              <a class="relative group w-max" href={href}>
-                {text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+    <button class="absolute md:hidden top-3 right-3">
+      <MdClose title="close menu" size={24} />
+    </button>
 
-    <div class="flex gap-5 items-center">
-      <ul class="flex flex-col gap-3 md:flex-row">
-        {
-          navLinks.map(({ text, href }) => (
-            <li>
-              <a href={href}>{text}</a>
-            </li>
-          ))
-        }
-        <li class="ml-3">
-          <a href="#">
-            <Cart />
-          </a>
-        </li>
-      </ul>
-    </div>
+    <ul class="">
+      {
+        services.map(({ text, href }) => (
+          <li>
+            <a class="relative group w-max" href={href}>
+              {text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <ul class="">
+      {
+        navLinks.map(({ text, href }) => (
+          <li>
+            <a href={href}>{text}</a>
+          </li>
+        ))
+      }
+      <li class="ml-3 hidden md:block">
+        <a href="#">
+          <Cart />
+        </a>
+      </li>
+    </ul>
   </div>
 </nav>
 
-<div class="flex md:flex-col w-full max-w-7xl mx-auto">
-  <section class="flex flex-col h-full w-full" id="content">
+<span id="container" class="grow">
+  <div class="flex md:flex-col w-full max-w-7xl mx-auto">
+    <section class="flex flex-col h-full w-full" id="content">
+      <div
+        class={cx(
+          "flex justify-between items-center md:hidden h-16 px-4",
+          "sticky top-0 bg-white"
+        )}
+      >
+        <CgMenuLeftAlt
+          id="menu-toggler"
+          size={24}
+          className="cursor-pointer text-slate-500"
+        />
+
+        <SmallLogo className={cx("w-16 h-auto")} />
+
+        <Cart />
+      </div>
+
+      <main class="grow py-10 mx-auto w-full">
+        <slot />
+      </main>
+    </section>
+  </div>
+
+  <footer class="bg-white text-sm text-slate-500">
     <div
       class={cx(
-        "flex justify-between items-center md:hidden p-4",
-        "sticky top-0 bg-white"
+        "w-full max-w-7xl mx-auto",
+        "flex justify-between items-center p-5"
       )}
     >
-      <CgMenuLeftAlt
-        id="menu-toggler"
-        size={24}
-        className="cursor-pointer text-slate-500"
-      />
+      <p>Johnson and Brooks &#169; | 2023</p>
 
-      <SmallLogo className={cx("w-16 h-auto")} />
-
-      <div>
-        <ul>
-          <li>
-            <Cart />
-          </li>
-        </ul>
+      <div class="flex gap-3">
+        <a target="_blank">
+          <FaInstagram
+            className="cursor-pointer text-inherit"
+            title="instagram"
+          />
+        </a>
+        <a target="_blank">
+          <FaFacebook
+            className="cursor-pointer text-inherit"
+            title="facebook"
+          />
+        </a>
       </div>
     </div>
-
-    <main class="grow py-10 mx-auto w-full">
-      <slot />
-    </main>
-  </section>
-</div>
-
-<footer class="bg-white text-sm text-slate-500">
-  <div
-    class={cx(
-      "w-full max-w-7xl mx-auto",
-      "flex justify-between items-center p-5"
-    )}
-  >
-    <p>Johnson and Brooks &#169; | 2023</p>
-
-    <div class="flex gap-3">
-      <a target="_blank">
-        <FaInstagram
-          className="cursor-pointer text-inherit"
-          title="instagram"
-        />
-      </a>
-      <a target="_blank">
-        <FaFacebook className="cursor-pointer text-inherit" title="facebook" />
-      </a>
-    </div>
-  </div>
-</footer>
+  </footer>
+</span>
 
 <script>
   const menuBtn = document.getElementById("menu-toggler")!;
   const nav = document.querySelector("nav")!;
-  menuBtn.addEventListener("click", () => {
-    nav.classList.toggle("w-36");
-  });
+  const close = document.querySelector("button")!;
+
+  const openMenu = () => nav.classList.add("translate-x-0");
+  const closeMenu = () => nav.classList.remove("translate-x-0");
+
+  menuBtn.addEventListener("click", openMenu);
+  close.addEventListener("click", closeMenu);
 </script>
