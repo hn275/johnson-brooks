@@ -1,5 +1,6 @@
 ---
 import "@style/global.css";
+import cx from "classnames";
 
 interface Props {
   title: string;
@@ -16,7 +17,8 @@ const { title } = Astro.props as Props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="bg-slate-50 text-slate-700">
+
+  <body class={cx("bg-slate-50 text-slate-700")}>
     <slot />
   </body>
 </html>

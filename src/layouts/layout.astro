@@ -19,51 +19,58 @@ const navLinks: NavLinks[] = [
 ];
 ---
 
-<div class="flex md:flex-col h-[100vh] overflow-y-scroll">
-  <nav
+<nav
+  class={cx(
+    "w-0 overflow-clip transition-all",
+    "sticky top-0 left-0 z-50",
+    "md:w-full",
+    "shadow bg-white",
+    "flex justify-center items-center"
+  )}
+>
+  <div
     class={cx(
-      "w-0 overflow-clip transition-all",
-      "sticky top-0 z-50",
-      "md:w-full",
-      "shadow"
+      "p-8 pt-20 grow h-full flex flex-col md:flex-row",
+      "md:p-6",
+      "max-w-7xl"
     )}
   >
-    <div
-      class={cx(
-        "p-8 pt-20 grow h-full flex flex-col md:flex-row",
-        "md:p-6 bg-white"
-      )}
-    >
-      <div class={cx("whitespace-nowrap grow", "md:flex gap-5")}>
-        <SmallLogo className="hidden md:block w-16" />
+    <div class={cx("whitespace-nowrap grow", "md:flex gap-5")}>
+      <SmallLogo className="hidden md:block w-16" />
 
-        <ul class="flex flex-col gap-3 md:flex-row md:items-center">
-          {
-            services.map(({ text, href }) => (
-              <li>
-                <a class="relative group w-max" href={href}>
-                  {text}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div class="flex gap-5 items-center">
-        <ul class="flex flex-col gap-3 md:flex-row">
-          {
-            navLinks.map(({ text, href }) => (
-              <li>
-                <a href={href}>{text}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+      <ul class="flex flex-col gap-3 md:flex-row md:items-center">
+        {
+          services.map(({ text, href }) => (
+            <li>
+              <a class="relative group w-max" href={href}>
+                {text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
-  </nav>
 
+    <div class="flex gap-5 items-center">
+      <ul class="flex flex-col gap-3 md:flex-row">
+        {
+          navLinks.map(({ text, href }) => (
+            <li>
+              <a href={href}>{text}</a>
+            </li>
+          ))
+        }
+        <li class="ml-3">
+          <a href="#">
+            <Cart />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="flex md:flex-col w-full max-w-7xl mx-auto">
   <section class="flex flex-col h-full w-full" id="content">
     <div
       class={cx(
@@ -81,7 +88,6 @@ const navLinks: NavLinks[] = [
 
       <div>
         <ul>
-          <li><a href=""></a></li>
           <li>
             <Cart />
           </li>
@@ -89,32 +95,34 @@ const navLinks: NavLinks[] = [
       </div>
     </div>
 
-    <main class="grow py-10">
+    <main class="grow py-10 mx-auto w-full">
       <slot />
     </main>
-
-    <footer
-      class="flex justify-between items-center p-3 bg-white text-sm text-slate-500"
-    >
-      <p>Johnson and Brooks &#169; | 2023</p>
-
-      <div class="flex gap-3">
-        <a target="_blank">
-          <FaInstagram
-            className="cursor-pointer text-inherit"
-            title="instagram"
-          />
-        </a>
-        <a target="_blank">
-          <FaFacebook
-            className="cursor-pointer text-inherit"
-            title="facebook"
-          />
-        </a>
-      </div>
-    </footer>
   </section>
 </div>
+
+<footer class="bg-white text-sm text-slate-500">
+  <div
+    class={cx(
+      "w-full max-w-7xl mx-auto",
+      "flex justify-between items-center p-5"
+    )}
+  >
+    <p>Johnson and Brooks &#169; | 2023</p>
+
+    <div class="flex gap-3">
+      <a target="_blank">
+        <FaInstagram
+          className="cursor-pointer text-inherit"
+          title="instagram"
+        />
+      </a>
+      <a target="_blank">
+        <FaFacebook className="cursor-pointer text-inherit" title="facebook" />
+      </a>
+    </div>
+  </div>
+</footer>
 
 <script>
   const menuBtn = document.getElementById("menu-toggler")!;
