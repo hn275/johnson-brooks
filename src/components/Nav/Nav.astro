@@ -1,46 +1,92 @@
 ---
-import logo from "@assets/logo_small.svg";
 import cx from "classnames";
+import Logo from "@assets/logo_small.svg";
+import { CgMenuLeftAlt } from "react-icons/cg";
+import { MdClose } from "react-icons/md";
+import { Cart } from "./Cart";
 
-const navLinks = [
-    { text: "Home", href: "/" },
-    { text: "Wood", href: "/" },
-    { text: "3D Prints", href: "/" },
+type NavLinks = { text: string; href: string };
+
+const services: NavLinks[] = [
+  { text: "Climbing", href: "/climbing" },
+  { text: "Wood shop", href: "/woodshop" },
+  { text: "3D Prints", href: "/printing" },
+];
+
+const navLinks: NavLinks[] = [
+  { text: "Contact", href: "/contact" },
+  { text: "About", href: "/about" },
 ];
 ---
 
-<script>
-    const menuBtn = document.querySelectorAll("#menuBtn");
-    const menu = document.querySelector("nav");
-    const menuOverlay = document.getElementById("nav-overlay");
-    menuBtn?.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            menu?.classList.toggle("translate-x-0");
-            menuOverlay?.classList.toggle("w-full");
-        });
-    });
-</script>
+<nav class={cx("sticky top-0 left-0", "z-50 isolate")}>
+  {/* desktop size */}
+  <div class="hidden md:block"></div>
 
-<nav class={cx("h-[100vh] md:h-max", "isolate inline-block")}>
-    <div class="bg-red-200 h-full w-full">
-        <button id="menuBtn">close</button>
-        <img src={logo} class={cx("w-16 h-auto")} />
+  {/* mobile size */}
+  <div
+    class={cx(
+      "md:hidden",
+      "flex justify-between items-center",
+      "bg-white h-12 px-3"
+    )}
+  >
+    <CgMenuLeftAlt role="button" id="menu-open" title="open menu" size={24} />
 
-        <ul class="">
-            {
-                navLinks.map(({ text, href }) => (
-                    <li>
-                        <a class="relative group w-max" href={href}>
-                            {text}
-                        </a>
-                    </li>
-                ))
-            }
-        </ul>
+    <a href="/">
+      <img src={Logo} alt="home page" class="w-16" loading="lazy" />
+    </a>
 
-        <ul>
-            <li>contact</li>
-            <li>about</li>
-        </ul>
-    </div>
+    <a>
+      <Cart />
+    </a>
+  </div>
+
+  <div
+    id="nav-links-mobile"
+    class={cx(
+      "bg-red-300 flex flex-col justify-center items-center gap-6",
+      "text-center",
+      "absolute top-12"
+    )}
+  >
+    <ul>
+      {
+        services.map(({ text, href }) => (
+          <li>
+            <a href={href}>{text}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <ul>
+      {
+        navLinks.map(({ text, href }) => (
+          <li>
+            <a href={href}>{text}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </nav>
+
+<style>
+  #nav-links-mobile {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transition: clip-path;
+    transition-duration: 200ms;
+  }
+
+  #nav-links-mobile.open {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+</style>
+
+<script>
+  const navlinks = document.getElementById("nav-links-mobile");
+  const openMenu = document.getElementById("menu-open");
+  const toggleMenu = () => navlinks?.classList.toggle("open");
+  openMenu?.addEventListener("click", toggleMenu);
+</script>

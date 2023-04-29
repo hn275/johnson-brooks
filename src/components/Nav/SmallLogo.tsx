@@ -1,7 +1,7 @@
 import Logo from "@assets/logo_small.svg";
 
 interface Props {
-  className: string;
+  className?: string;
 }
 
 export function SmallLogo(props: Props) {
