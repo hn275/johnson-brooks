@@ -2,8 +2,8 @@
 import cx from "classnames";
 import Logo from "@assets/logo_small.svg";
 import { CgMenuLeftAlt } from "react-icons/cg";
-import { MdClose } from "react-icons/md";
 import { Cart } from "./Cart";
+import { Icon } from "astro-icon";
 
 type NavLinks = { text: string; href: string };
 
@@ -19,7 +19,7 @@ const navLinks: NavLinks[] = [
 ];
 ---
 
-<nav class={cx("sticky top-0 left-0", "z-50 isolate")}>
+<nav class={cx("sticky top-0 left-0 h-max", "z-50 isolate")}>
   {/* desktop size */}
   <div class="hidden md:block"></div>
 
@@ -28,7 +28,8 @@ const navLinks: NavLinks[] = [
     class={cx(
       "md:hidden",
       "flex justify-between items-center",
-      "bg-white h-12 px-3"
+      "bg-white h-12 px-3",
+      "border border-b-slate-100"
     )}
   >
     <CgMenuLeftAlt role="button" id="menu-open" title="open menu" size={24} />
@@ -45,36 +46,58 @@ const navLinks: NavLinks[] = [
   <div
     id="nav-links-mobile"
     class={cx(
-      "bg-red-300 flex flex-col justify-center items-center gap-6",
-      "text-center",
-      "absolute top-12"
+      "bg-white/20 backdrop-blur",
+      "absolute top-0 h-[100vh] w-full",
+      "p-5"
     )}
   >
-    <ul>
-      {
-        services.map(({ text, href }) => (
-          <li>
-            <a href={href}>{text}</a>
-          </li>
-        ))
-      }
-    </ul>
+    <div
+      class={cx(
+        "bg-slate-900 text-slate-50",
+        "h-full w-max p-10",
+        "rounded-md",
+        "flex flex-col justify-between items-start",
+        "shadow-md shadow-slate-800/30"
+      )}
+    >
+      <Icon
+        pack="ic"
+        name="round-chevron-left"
+        size="24"
+        class={cx(
+          "chev",
+          "cursor-pointer rotate-45 z-50",
+          "absolute top-8 left-8"
+        )}
+        role="button"
+      />
 
-    <ul>
-      {
-        navLinks.map(({ text, href }) => (
-          <li>
-            <a href={href}>{text}</a>
-          </li>
-        ))
-      }
-    </ul>
+      <ul>
+        {
+          services.map(({ text, href }) => (
+            <li>
+              <a href={href}>{text}</a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <ul>
+        {
+          navLinks.map(({ text, href }) => (
+            <li>
+              <a href={href}>{text}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </nav>
 
 <style>
   #nav-links-mobile {
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
     transition: clip-path;
     transition-duration: 200ms;
   }
@@ -87,6 +110,9 @@ const navLinks: NavLinks[] = [
 <script>
   const navlinks = document.getElementById("nav-links-mobile");
   const openMenu = document.getElementById("menu-open");
+  const chevronClose = document.querySelector(".chev");
+
   const toggleMenu = () => navlinks?.classList.toggle("open");
   openMenu?.addEventListener("click", toggleMenu);
+  chevronClose?.addEventListener("click", toggleMenu);
 </script>

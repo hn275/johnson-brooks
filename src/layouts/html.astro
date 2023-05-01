@@ -18,7 +18,7 @@ const { title } = Astro.props as Props;
     <title>{title}</title>
   </head>
 
-  <body class={cx("bg-slate-50 text-slate-700", "")}>
+  <body class={cx("bg-slate-50 text-slate-700", "leading-relaxed")}>
     <slot />
   </body>
 </html>
