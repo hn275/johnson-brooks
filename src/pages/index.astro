@@ -1,11 +1,55 @@
 ---
 import Html from "@layouts/html.astro";
 import Layout from "@layouts/layout.astro";
-import Home from "@modules/home/Home.view.tsx";
+import Logo from "@assets/logo.png";
+import HangBoard from "@modules/home/assets/hangboard.jpg";
+import WoodShop from "@modules/home/assets/wood_shop.jpg";
+import Printing from "@modules/home/assets/printing.jpg";
+import { type ServiceCardProps, ServiceCard } from "@modules/home/components";
+import cx from "classnames";
+import { PAGES } from "@lib/routes";
+
+const navLinks: ServiceCardProps[] = [
+  { text: "Climbing", href: PAGES.climbing, src: HangBoard },
+  { text: "Woodshop", href: PAGES.woodShop, src: WoodShop },
+];
+
+const printingService: ServiceCardProps = {
+  text: "3D Printings",
+  href: PAGES.printing,
+  src: Printing,
+};
 ---
 
 <Html title="Johnson and Brooks">
   <Layout>
-    <Home />
+    <div class="h-full flex flex-col justify-center items-center gap-10">
+      <img
+        src={Logo}
+        alt="Johnson and Brooks"
+        class="w-36 md:w-72 h-auto mx-auto"
+      />
+
+      <section class="flex flex-col items-center justify-center gap-3 mb-10">
+        <h2 class="text-3xl font-semibold fg-accent">Wood Work</h2>
+
+        <ul class={cx("flex justify-center flex-wrap items-center gap-5")}>
+          {
+            navLinks.map((props) => (
+              <li class="w-60 md:w-72 lg:w-96">
+                <ServiceCard {...props} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="flex flex-col items-center justify-center gap-3">
+        <h2 class="text-3xl font-semibold fg-accent">3D Printings</h2>
+        <div class="w-1/2 max-w-6xl">
+          <ServiceCard {...printingService} />
+        </div>
+      </section>
+    </div>
   </Layout>
 </Html>
