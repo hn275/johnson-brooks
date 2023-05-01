@@ -19,9 +19,51 @@ const navLinks: NavLinks[] = [
 ];
 ---
 
-<nav class={cx("sticky top-0 left-0 h-max", "z-50 isolate")}>
+<nav
+  class={cx(
+    "sticky top-0 left-0 h-max",
+    "z-50 isolate",
+    "font-[500] text-slate-600"
+  )}
+>
   {/* desktop size */}
-  <div class="hidden md:block"></div>
+  <div class={cx("hidden md:block", "bg-white w-full")}>
+    <div
+      class={cx(
+        "w-full max-w-7xl mx-auto p-5",
+        "flex justify-between items-center"
+      )}
+    >
+      <div class="flex items-center gap-10">
+        <a href="/">
+          <img src={Logo} alt="J&B" class="w-16" />
+        </a>
+
+        <ul class="flex items-center gap-5">
+          {
+            services.map(({ text, href }) => (
+              <li>
+                <a href={href}>{text}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="flex items-center gap-10">
+        <ul class="flex items-center gap-5">
+          {
+            navLinks.map(({ text, href }) => (
+              <li>
+                <a href={href}>{text}</a>
+              </li>
+            ))
+          }
+        </ul>
+        <Cart client:load />
+      </div>
+    </div>
+  </div>
 
   {/* mobile size */}
   <div
@@ -39,7 +81,7 @@ const navLinks: NavLinks[] = [
     </a>
 
     <a>
-      <Cart />
+      <Cart client:load />
     </a>
   </div>
 
