@@ -1,6 +1,7 @@
 ---
 import cx from "classnames";
 import Logo from "@assets/logo_small.svg";
+import { PAGES } from "@lib/routes";
 import { CgMenuLeftAlt } from "react-icons/cg";
 import { Cart } from "./Cart";
 import { Icon } from "astro-icon";
@@ -8,14 +9,14 @@ import { Icon } from "astro-icon";
 type NavLinks = { text: string; href: string };
 
 const services: NavLinks[] = [
-  { text: "Climbing", href: "/climbing" },
-  { text: "Wood shop", href: "/woodshop" },
-  { text: "3D Prints", href: "/printing" },
+  { text: "Climbing", href: PAGES.climbing },
+  { text: "Wood shop", href: PAGES.woodShop },
+  { text: "3D Prints", href: PAGES.printing },
 ];
 
 const navLinks: NavLinks[] = [
-  { text: "Contact", href: "/contact" },
-  { text: "About", href: "/about" },
+  { text: "Contact", href: PAGES.contact },
+  { text: "About", href: PAGES.about },
 ];
 ---
 

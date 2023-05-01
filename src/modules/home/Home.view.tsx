@@ -4,16 +4,17 @@ import Printing from "./assets/printing.jpg";
 import Logo from "@assets/logo.png";
 import { ServiceCard, type ServiceCardProps } from "./components";
 import cx from "classnames";
+import { PAGES } from "src/lib/routes";
 
 export default () => {
   const navLinks: ServiceCardProps[] = [
-    { text: "Climbing", href: "/climbing", src: HangBoard },
-    { text: "Woodshop", href: "/woodshop", src: WoodShop },
+    { text: "Climbing", href: PAGES.climbing, src: HangBoard },
+    { text: "Woodshop", href: PAGES.woodShop, src: WoodShop },
   ];
 
   const printingService: ServiceCardProps = {
-    text: "3D-Printings",
-    href: "/printing",
+    text: "3D Printings",
+    href: PAGES.printing,
     src: Printing,
   };
 
