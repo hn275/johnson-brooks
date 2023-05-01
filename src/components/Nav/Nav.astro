@@ -2,7 +2,6 @@
 import cx from "classnames";
 import Logo from "@assets/logo_small.svg";
 import { PAGES } from "@lib/routes";
-import { CgMenuLeftAlt } from "react-icons/cg";
 import { Cart } from "./Cart";
 import { Icon } from "astro-icon";
 
@@ -75,7 +74,14 @@ const navLinks: NavLinks[] = [
       "border border-b-slate-100"
     )}
   >
-    <CgMenuLeftAlt role="button" id="menu-open" title="open menu" size={24} />
+    <Icon
+      name="menu-left-alt"
+      pack="gg"
+      role="button"
+      id="menu-open"
+      title="open menu"
+      size={24}
+    />
 
     <a href="/">
       <img src={Logo} alt="home page" class="w-16" loading="lazy" />
