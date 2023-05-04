@@ -4,16 +4,15 @@ import Logo from "@assets/logo_small.svg";
 import { PAGES } from "@lib/routes";
 import { Cart } from "./Cart";
 import { Icon } from "astro-icon";
+import NavLink from "./NavLink.astro";
+import type { NavLinkProps } from "./NavLink.astro";
 
-type NavLinks = { text: string; href: string };
-
-const services: NavLinks[] = [
-  { text: "Climbing", href: PAGES.climbing },
-  { text: "Wood shop", href: PAGES.woodShop },
-  { text: "3D Prints", href: PAGES.printing },
+const services: NavLinkProps[] = [
+  { text: "Shop", href: PAGES.shop },
+  { text: "3D Printing", href: PAGES.printing },
 ];
 
-const navLinks: NavLinks[] = [
+const navLinks: NavLinkProps[] = [
   { text: "Contact", href: PAGES.contact },
   { text: "About", href: PAGES.about },
 ];
@@ -35,7 +34,7 @@ const navLinks: NavLinks[] = [
       )}
     >
       <div class="flex items-center gap-10">
-        <a href="/">
+        <a href={PAGES.shop}>
           <img src={Logo} alt="J&B" class="w-16" />
         </a>
 
@@ -43,7 +42,7 @@ const navLinks: NavLinks[] = [
           {
             services.map(({ text, href }) => (
               <li>
-                <a href={href}>{text}</a>
+                <NavLink href={href}>{text}</NavLink>
               </li>
             ))
           }
@@ -55,7 +54,7 @@ const navLinks: NavLinks[] = [
           {
             navLinks.map(({ text, href }) => (
               <li>
-                <a href={href}>{text}</a>
+                <NavLink href={href}>{text}</NavLink>
               </li>
             ))
           }

@@ -1,0 +1,21 @@
+---
+import cx from "classnames";
+
+export type NavLinkProps = { text: string; href: string };
+const { href } = Astro.props as NavLinkProps;
+
+const currentPath = new URL(Astro.request.url).pathname;
+---
+
+<a
+  href={href}
+  class={cx(
+    "p-2",
+    {
+      "border-b-2 border-b-slate-800": href === currentPath,
+    },
+    "hover:no-underline hover:bg-slate-100/20 transition-colors",
+  )}
+>
+  <slot />
+</a>
