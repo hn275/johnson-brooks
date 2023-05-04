@@ -1,6 +1,10 @@
 ---
 import Html from "@layouts/html.astro";
 import Layout from "@layouts/layout.astro";
+import { mockFetch } from "@modules/shop/mock/mock";
+
+let data = await mockFetch();
+data = JSON.parse(data as string);
 ---
 
 <Html title="shop">
@@ -11,6 +15,7 @@ import Layout from "@layouts/layout.astro";
 
     <section id="cutting-board">
       <h2>Boards</h2>
+      <img src={`data:image/jpg;base64,${data["imgSrc"]}`} />
     </section>
   </Layout>
 </Html>
