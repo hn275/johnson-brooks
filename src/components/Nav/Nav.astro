@@ -23,10 +23,11 @@ const navLinks: NavLinkProps[] = [
     "sticky top-0 left-0 h-max",
     "z-50 isolate",
     "font-[500] text-slate-600",
+    "bg-white h-12 md:h-16",
   )}
 >
   {/* desktop size */}
-  <div class={cx("hidden md:block", "bg-white w-full")}>
+  <div class={cx("hidden md:block", "h-full w-full")}>
     <div
       class={cx(
         "w-full max-w-7xl mx-auto p-5",
@@ -34,7 +35,7 @@ const navLinks: NavLinkProps[] = [
       )}
     >
       <div class="flex items-center gap-10">
-        <a href={PAGES.shop}>
+        <a href={PAGES.index}>
           <img src={Logo} alt="J&B" class="w-16" />
         </a>
 
@@ -69,7 +70,7 @@ const navLinks: NavLinkProps[] = [
     class={cx(
       "md:hidden",
       "flex justify-between items-center",
-      "bg-white h-12 px-3",
+      "h-12 px-3",
       "border border-b-slate-100",
     )}
   >
@@ -82,7 +83,7 @@ const navLinks: NavLinkProps[] = [
       size={24}
     />
 
-    <a href="/">
+    <a href={PAGES.index}>
       <img src={Logo} alt="home page" class="w-16" loading="lazy" />
     </a>
 

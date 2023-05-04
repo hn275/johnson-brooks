@@ -6,19 +6,17 @@ import cx from "classnames";
 
 <Nav />
 
-<div class="flex md:flex-col w-full max-w-7xl mx-auto">
-  <section class="flex flex-col h-full w-full" id="content">
-    <main class="grow py-10 mx-auto w-full">
-      <slot />
-    </main>
-  </section>
+<div class="w-full max-w-7xl mx-auto">
+  <main class="grow py-10 mx-auto w-full">
+    <slot />
+  </main>
 </div>
 
 <footer class="bg-white text-sm text-slate-500">
   <div
     class={cx(
       "w-full max-w-7xl mx-auto",
-      "flex justify-between items-center p-5"
+      "flex justify-between items-center p-5",
     )}
   >
     <p>Johnson and Brooks &#169; | 2023</p>

@@ -1,5 +1,6 @@
 export enum PAGES {
-  shop = "/",
+  index = "/",
+  shop = "/shop",
   printing = "/printing",
   contact = "/contact",
   about = "/about",
