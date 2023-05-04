@@ -10,9 +10,9 @@ const currentPath = new URL(Astro.request.url).pathname;
 <a
   href={href}
   class={cx(
-    "p-2",
+    "p-3 rounded-t-md",
     {
-      "border-b-2 border-b-slate-800": href === currentPath,
+      "border-b-2 border-b-main": href === currentPath,
     },
     "hover:no-underline hover:bg-slate-100/20 transition-colors",
   )}

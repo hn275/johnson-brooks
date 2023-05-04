@@ -22,7 +22,7 @@ const navLinks: NavLinkProps[] = [
   class={cx(
     "sticky top-0 left-0 h-max",
     "z-50 isolate",
-    "font-[500] text-slate-600"
+    "font-[500] text-slate-600",
   )}
 >
   {/* desktop size */}
@@ -30,7 +30,7 @@ const navLinks: NavLinkProps[] = [
     <div
       class={cx(
         "w-full max-w-7xl mx-auto p-5",
-        "flex justify-between items-center"
+        "flex justify-between items-center",
       )}
     >
       <div class="flex items-center gap-10">
@@ -38,7 +38,7 @@ const navLinks: NavLinkProps[] = [
           <img src={Logo} alt="J&B" class="w-16" />
         </a>
 
-        <ul class="flex items-center gap-5">
+        <ul class="flex items-center">
           {
             services.map(({ text, href }) => (
               <li>
@@ -50,7 +50,7 @@ const navLinks: NavLinkProps[] = [
       </div>
 
       <div class="flex items-center gap-10">
-        <ul class="flex items-center gap-5">
+        <ul class="flex items-center">
           {
             navLinks.map(({ text, href }) => (
               <li>
@@ -70,7 +70,7 @@ const navLinks: NavLinkProps[] = [
       "md:hidden",
       "flex justify-between items-center",
       "bg-white h-12 px-3",
-      "border border-b-slate-100"
+      "border border-b-slate-100",
     )}
   >
     <Icon
@@ -96,7 +96,7 @@ const navLinks: NavLinkProps[] = [
     class={cx(
       "bg-white/20 backdrop-blur",
       "absolute top-0 h-[100vh] w-full",
-      "p-5"
+      "p-5",
     )}
   >
     <div
@@ -105,7 +105,7 @@ const navLinks: NavLinkProps[] = [
         "h-full w-max p-10",
         "rounded-md",
         "flex flex-col justify-between items-start",
-        "shadow-md shadow-slate-800/30"
+        "shadow-md shadow-slate-800/30",
       )}
     >
       <Icon
@@ -115,7 +115,7 @@ const navLinks: NavLinkProps[] = [
         class={cx(
           "chev",
           "cursor-pointer rotate-45 z-50",
-          "absolute top-8 left-8"
+          "absolute top-8 left-8",
         )}
         role="button"
       />
