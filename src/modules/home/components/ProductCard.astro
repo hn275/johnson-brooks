@@ -1,0 +1,45 @@
+---
+import type { Product } from "src/pages/index.astro";
+import cx from "classnames";
+import { Icon } from "astro-icon";
+// import "@style/global.css";
+
+const { title, src, price, inventory, material, description } =
+  Astro.props as Product;
+---
+
+<div
+  class={cx("bg-white p-3 shadow-lg shadow-slate-400/20 rounded-md", "w-full")}
+>
+  <img
+    loading="lazy"
+    src={`data:image/png;base64,${src}`}
+    alt={title}
+    class="w-full rounded-sm"
+  />
+
+  <div class="mt-6 flex flex-col gap-3">
+    <h3 class="text-lg font-semibold text-brand-200">{title}</h3>
+
+    <p>{description}</p>
+
+    <div class="text-sm">
+      <p>Material: {material}</p>
+      <p>Inventory: {inventory}</p>
+      <p>Price: ${price.toFixed(2)}</p>
+    </div>
+
+    <button
+      class={cx(
+        "bg-brand-100 text-brand-200 text-sm uppercase",
+        "flex items-center justify-center gap-1",
+        "hover:brightness-110 rounded-md p-3",
+      )}
+    >
+      Add to cart&nbsp;
+      <span>
+        <Icon pack="ph" name="shopping-cart-light" size={18} />
+      </span>
+    </button>
+  </div>
+</div>

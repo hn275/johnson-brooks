@@ -1,0 +1,8 @@
+---
+import cx from "classnames";
+const props = Astro.props;
+---
+
+<section {...props} class={cx("w-full max-w-7xl mx-auto my-5 px-5")}>
+  <slot />
+</section>

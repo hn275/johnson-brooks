@@ -22,7 +22,8 @@ const socialLinks = [
   class={cx(
     "hamburger hamburger--squeeze",
     "fixed top-0 right-0 z-[999]",
-    "bg-white text-slate-900",
+    "text-slate-900 bg-brand-200",
+    "hover:brightness-125",
   )}
   type="button"
 >
@@ -36,7 +37,7 @@ const socialLinks = [
   class={cx(
     "fixed top-0 left-0 bottom-0 right-0",
     "bg-brand-200 text-slate-200",
-    "isolate -translate-y-full transition-transform",
+    "isolate -translate-y-full transition-all duration-300",
     "flex flex-col justify-center items-center gap-10 md:gap-20",
   )}
 >
@@ -69,7 +70,7 @@ const socialLinks = [
               "hover:text-brand-100 transition-colors",
             )}
           >
-            <Icon {...icon} />
+            <Icon {...icon} size={40} />
           </a>
         </li>
       ))

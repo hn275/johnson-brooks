@@ -6,12 +6,9 @@
  * @link https://github.com/jonsuh/hamburgers
  */
 
-:root {
-  --secondary: #f19a3e;
-  --main: #403233;
-}
-
 .hamburger {
+  --main: #403233;
+  --secondary: #f19a3e;
   padding: 15px 15px;
   display: inline-block;
   cursor: pointer;
@@ -20,14 +17,11 @@
   transition-timing-function: linear;
   font: inherit;
   color: inherit;
-  text-transform: none;
   background-color: var(--main);
+  text-transform: none;
   border: 0;
   margin: 0;
   overflow: visible;
-}
-.hamburger:hover {
-  opacity: 0.7;
 }
 .hamburger.is-active:hover {
   opacity: 0.7;

@@ -1,6 +1,7 @@
 ---
 import "@style/global.css";
 import cx from "classnames";
+import Layout from "./layout.astro";
 
 interface Props {
   title: string;
@@ -19,6 +20,8 @@ const { title } = Astro.props as Props;
   </head>
 
   <body class={cx("bg-slate-50 text-slate-700", "leading-relaxed")}>
-    <slot />
+    <Layout>
+      <slot />
+    </Layout>
   </body>
 </html>
