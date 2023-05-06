@@ -1,6 +1,7 @@
 {
   "name": "johnson-and-brooks",
   "type": "module",
+  "private": true,
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
@@ -23,6 +24,7 @@
     "tailwindcss": "^3.0.24"
   },
   "devDependencies": {
+    "postcss": "^8.4.23",
     "prettier": "^2.8.8",
     "prettier-plugin-astro": "^0.8.0"
   }
