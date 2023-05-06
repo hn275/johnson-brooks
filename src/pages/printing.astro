@@ -1,0 +1,79 @@
+---
+import Html from "@layouts/html.astro";
+import Footer from "@layouts/footer.astro";
+import Banner from "@modules/printing/assets/banner.jpg";
+import Build1 from "@modules/printing/assets/build_one.jpg";
+import Build2 from "@modules/printing/assets/build_two.jpg";
+import Build3 from "@modules/printing/assets/build_three.jpg";
+import Section from "@components/Section/section.astro";
+import cx from "classnames";
+import { PAGES } from "@lib/routes";
+
+const builds = [
+  { src: Build1, alt: "build example" },
+  { src: Build2, alt: "build example" },
+  { src: Build3, alt: "build example" },
+];
+---
+
+<Html title="3D Printing">
+  <header
+    id="hero"
+    class={cx(
+      "bg-brand-200 text-white",
+      "relative isolate h-[480px] w-full",
+      "flex flex-col justify-center items-center",
+    )}
+  >
+    <h1
+      class={cx(
+        "font-bold italic text-3xl md:text-6xl text-brand-100",
+        "flex flex-col justify-center items-center",
+      )}
+    >
+      3D Printing
+    </h1>
+
+    <p class="max-w-[65ch] w-full text-center mt-5">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam numquam,
+      molestiae qui ipsam odit incidunt! Nam debitis accusantium beatae eius!
+    </p>
+
+    <a
+      href={PAGES.about + "#contact"}
+      class={cx(
+        "px-3 py-2 mt-5 rounded-md",
+        "bg-brand-100 text-brand-200 uppercase",
+        "hover:brightness-125 transition-all",
+      )}
+    >
+      Get a quote!
+    </a>
+
+    <div class={cx("absolute top-0 left-0", "-z-10 w-full h-full")}>
+      <span class="bg-slate-900/50 h-full w-full absolute top-0 left-0"></span>
+      <img
+        src={Banner}
+        alt="hangboard picture"
+        class={cx("w-full h-full object-cover")}
+      />
+    </div>
+  </header>
+
+  <Section>
+    <h2 class="text-2xl font-semibold text-center text-brand-200 mt-20 mb-10">
+      Build photos
+    </h2>
+    <ul class={cx("grid grid-cols-1 md:grid-cols-2 gap-1")}>
+      {
+        builds.map(({ src, alt }) => (
+          <li>
+            <img src={src} alt={alt} />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Footer />
+</Html>
