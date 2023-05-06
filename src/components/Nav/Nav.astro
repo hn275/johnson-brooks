@@ -1,7 +1,7 @@
 ---
 import "./hamburger.css";
 import cx from "classnames";
-import { PAGES } from "@lib/routes";
+import { PAGES, LINKS } from "@lib/routes";
 import { Icon } from "astro-icon";
 
 const navLinks = [
@@ -11,8 +11,8 @@ const navLinks = [
 ];
 
 const socialLinks = [
-  { icon: { pack: "ic", name: "baseline-facebook" }, href: "/" },
-  { icon: { pack: "mdi", name: "instagram" }, href: "/" },
+  { icon: { pack: "ic", name: "baseline-facebook" }, href: LINKS.facebook },
+  { icon: { pack: "mdi", name: "instagram" }, href: LINKS.instagram },
 ];
 ---
 

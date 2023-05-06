@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer {
+  .form-control {
+    @apply flex flex-col;
+  }
+
+  .label {
+    @apply text-xs opacity-70 mb-1;
+  }
+
+  .input {
+    @apply p-7;
+  }
+}

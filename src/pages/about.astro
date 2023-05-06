@@ -1,8 +1,40 @@
 ---
 import Html from "@layouts/html.astro";
-import Layout from "@layouts/layout.astro";
+import Footer from "@layouts/footer.astro";
+import Contact from "@modules/about/components/Contact";
+import cx from "classnames";
 ---
 
-<Html title="About">
-  <Layout>alksdfjklsd</Layout>
+<Html title="Contact">
+  <section class="grid place-items-center h-[100vh]">
+    <div>
+      <h2 class={cx("text-center mb-10", "font-bold text-3xl text-brand-200")}>
+        Lorem ipsum dolor sit amet.
+      </h2>
+
+      <p class="max-w-[55ch] mx-auto">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ea
+        tempora eum atque corrupti quos minus officiis ullam repellat aspernatur
+        ipsa amet velit architecto nisi eaque tempore, autem id qui sequi
+        deleniti aut? Eaque optio eveniet vitae sapiente fugit eum, quasi dicta
+        quae temporibus fuga, accusamus odio voluptates libero quas.
+      </p>
+    </div>
+  </section>
+
+  <section class="h-[90vh] grid place-items-center p-10">
+    <div class="w-full max-w-7xl">
+      <h2
+        class={cx(
+          "text-center font-semibold mb-5",
+          "text-3xl text-brand-200/70",
+        )}
+      >
+        Contact Us
+      </h2>
+      <Contact client:load />
+    </div>
+  </section>
+
+  <Footer />
 </Html>

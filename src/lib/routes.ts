@@ -1,7 +1,10 @@
 export enum PAGES {
-  index = "/",
-  shop = "/shop",
+  shop = "/",
   printing = "/printing",
-  contact = "/contact",
   about = "/about",
+}
+
+export enum LINKS {
+  facebook = "/",
+  instagram = "/"
 }

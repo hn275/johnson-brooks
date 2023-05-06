@@ -1,14 +1,25 @@
 ---
+import { LINKS } from "@lib/routes";
+import { Icon } from "astro-icon";
 import cx from "classnames";
 ---
 
 <footer
   class={cx(
     "w-full bg-brand-200 text-brand-100",
-    "p-2 text-xs",
+    "p-3 text-xs",
     "flex items-center justify-between",
   )}
 >
   <div>Johnson & Brooks</div>
-  <div>facebook</div>
+
+  <div class="flex gap-2 items-center">
+    <a href={LINKS.facebook}>
+      <Icon pack="ic" name="baseline-facebook" size={18} />
+    </a>
+
+    <a href={LINKS.instagram}>
+      <Icon pack="mdi" name="instagram" size={18} />
+    </a>
+  </div>
 </footer>
