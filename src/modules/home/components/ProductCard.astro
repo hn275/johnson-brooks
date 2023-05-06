@@ -2,7 +2,6 @@
 import type { Product } from "src/pages/index.astro";
 import cx from "classnames";
 import { Icon } from "astro-icon";
-// import "@style/global.css";
 
 const { title, src, price, inventory, material, description } =
   Astro.props as Product;
@@ -21,10 +20,13 @@ const { title, src, price, inventory, material, description } =
   <div class="mt-6 flex flex-col gap-3">
     <h3 class="text-lg font-semibold text-brand-200">{title}</h3>
 
+    <p class={cx("text-xs text-brand-200")}>
+      {material}
+    </p>
+
     <p>{description}</p>
 
     <div class="text-sm">
-      <p>Material: {material}</p>
       <p>Inventory: {inventory}</p>
       <p>Price: ${price.toFixed(2)}</p>
     </div>
