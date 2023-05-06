@@ -30,38 +30,19 @@ const socialLinks = [
     <img src={Logo} class="w-16 ml-1 md:ml-0" />
   </a>
 
-  <div>
-    <button
-      id="menu-btn"
-      aria-label="menu button"
-      class={cx(
-        "md:hidden",
-        "hamburger hamburger--squeeze",
-        "text-slate-900",
-        "hover:brightness-125",
-        "z-[999] transition-all",
-      )}
-      type="button"
-    >
-      <span class="hamburger-box">
-        <span class="hamburger-inner"></span>
-      </span>
-    </button>
-
-    <nav>
-      <ul class="hidden md:flex items-center gap-5 text-white">
-        {
-          navLinks.map(({ text, href }) => (
-            <li class="nav-links">
-              <a href={href} class="hover:underline transition-colors">
-                {text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-  </div>
+  <nav>
+    <ul class="hidden md:flex items-center gap-5 text-white">
+      {
+        navLinks.map(({ text, href }) => (
+          <li class="nav-links">
+            <a href={href} class="hover:underline transition-colors">
+              {text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
 
   <div class={cx("hidden md:flex gap-7")}>
     <ul class={cx("flex items-center gap-3")}>
@@ -89,6 +70,23 @@ const socialLinks = [
     </a>
   </div>
 </div>
+
+<button
+  id="menu-btn"
+  aria-label="menu button"
+  class={cx(
+    "fixed -top-1 right-0",
+    "hamburger hamburger--squeeze",
+    "text-slate-900",
+    "hover:brightness-125",
+    "z-[999] transition-all",
+  )}
+  type="button"
+>
+  <span class="hamburger-box">
+    <span class="hamburger-inner"></span>
+  </span>
+</button>
 
 <nav
   id="nav"
@@ -187,5 +185,15 @@ const socialLinks = [
 <style>
   #nav.open {
     transform: translateY(0);
+  }
+
+  #menu-btn {
+    display: fixed;
+  }
+
+  @media only screen and (min-width: 640px) {
+    #menu-btn {
+      display: none;
+    }
   }
 </style>
