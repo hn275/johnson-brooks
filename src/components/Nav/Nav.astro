@@ -50,7 +50,7 @@ const socialLinks = [
   >
     {
       navLinks.map(({ text, href }) => (
-        <li>
+        <li class="nav-links">
           <a href={href} class="hover:text-brand-100 transition-colors">
             {text}
           </a>
@@ -87,6 +87,18 @@ const socialLinks = [
     nav?.classList.toggle("open");
   };
   menuBtn?.addEventListener("click", toggleMenu);
+  nav?.addEventListener("click", toggleMenu);
+
+  // active link color
+  const navLinks = document.querySelectorAll(".nav-links > a");
+  const location = document.location.pathname;
+
+  for (const link of navLinks) {
+    const ref = link.getAttribute("href");
+    if (ref !== location) continue;
+    link.classList.add("text-brand-100");
+    break;
+  }
 </script>
 
 <style>
