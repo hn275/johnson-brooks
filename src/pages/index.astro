@@ -1,7 +1,8 @@
 ---
 import Html from "@layouts/html.astro";
 import Section from "@components/Section/section.astro";
-import ProductCard from "@home/components/ProductCard.astro";
+import ProductCard from "@shop/components/ProductCard.astro";
+import Banner from "@shop/assets/banner.jpg";
 import Footer from "@layouts/footer.astro";
 import cx from "classnames";
 import { mockFetch } from "src/mock/mock";
@@ -19,7 +20,14 @@ const data = (await mockFetch()) as Product[];
 ---
 
 <Html title="Johnson and Brooks">
-  <section id="hero" class={cx("bg-brand-200 text-white", "p-20")}>
+  <header
+    id="hero"
+    class={cx(
+      "bg-brand-200 text-white",
+      "relative isolate h-[480px] w-full",
+      "flex flex-col justify-center items-center",
+    )}
+  >
     <h1
       class={cx(
         "font-bold italic text-3xl md:text-6xl text-brand-100",
@@ -32,7 +40,16 @@ const data = (await mockFetch()) as Product[];
     </h1>
 
     <h2 class="text-center mt-5">Climing, Woodshop, and Printings.</h2>
-  </section>
+
+    <div class={cx("absolute top-0 left-0", "-z-10 w-full h-full")}>
+      <span class="bg-brand-200/30 h-full w-full absolute top-0 left-0"></span>
+      <img
+        src={Banner}
+        alt="hangboard picture"
+        class={cx("w-full h-full object-cover")}
+      />
+    </div>
+  </header>
 
   <Section class="my-24">
     <h2 class="text-center text-2xl text-brand-200 italic">

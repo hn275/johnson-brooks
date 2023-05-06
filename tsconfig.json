@@ -9,7 +9,7 @@
       "@lib/*": ["./src/lib/*"],
       "@components/*": ["./src/components/*"],
       "@style/*": ["./src/style/*"],
-      "@home/*": ["./src/modules/home/*"]
+      "@shop/*": ["./src/modules/shop/*"]
     },
     "jsx": "react-jsx",
     "allowImportingTsExtensions": true,

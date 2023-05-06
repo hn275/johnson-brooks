@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        nav: "1fr 70% 1fr",
+      },
       colors: {
         brand: {
           100: "#f19a3e",

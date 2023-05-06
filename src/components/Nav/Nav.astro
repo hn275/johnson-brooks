@@ -3,6 +3,7 @@ import "./hamburger.css";
 import cx from "classnames";
 import { PAGES, LINKS } from "@lib/routes";
 import { Icon } from "astro-icon";
+import Logo from "./assets/logo.svg";
 
 const navLinks = [
   { text: "Shop", href: PAGES.shop },
@@ -16,21 +17,78 @@ const socialLinks = [
 ];
 ---
 
-<button
-  id="menu-btn"
-  aria-label="menu button"
+<div
+  id="menu"
   class={cx(
-    "hamburger hamburger--squeeze",
-    "fixed top-0 right-0 z-[999]",
-    "text-slate-900 bg-brand-200",
-    "hover:brightness-125",
+    "fixed top-0 left-0 right-0 z-[999]",
+    "transition-all p-1 md:p-3",
+    "flex justify-between items-center",
+    "md:grid grid-cols-nav place-items-center",
   )}
-  type="button"
 >
-  <span class="hamburger-box">
-    <span class="hamburger-inner"></span>
-  </span>
-</button>
+  <a href={PAGES.shop}>
+    <img src={Logo} class="w-16 ml-1 md:ml-0" />
+  </a>
+
+  <div>
+    <button
+      id="menu-btn"
+      aria-label="menu button"
+      class={cx(
+        "md:hidden",
+        "hamburger hamburger--squeeze",
+        "text-slate-900",
+        "hover:brightness-125",
+        "z-[999] transition-all",
+      )}
+      type="button"
+    >
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+
+    <nav>
+      <ul class="hidden md:flex items-center gap-5 text-white">
+        {
+          navLinks.map(({ text, href }) => (
+            <li class="nav-links">
+              <a href={href} class="hover:underline transition-colors">
+                {text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class={cx("hidden md:flex gap-7")}>
+    <ul class={cx("flex items-center gap-3")}>
+      {
+        socialLinks.map(({ href, icon }) => (
+          <li>
+            <a
+              href={href}
+              class={cx(
+                "text-slate-300/50 hover:text-brand-100 transition-colors",
+              )}
+            >
+              <Icon {...icon} size={24} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a
+      href=""
+      class={cx("text-slate-400 hover:text-slate-50 transition-colors")}
+    >
+      <Icon pack="ph" name="shopping-cart-simple" size={24} />
+    </a>
+  </div>
+</div>
 
 <nav
   id="nav"
@@ -39,6 +97,7 @@ const socialLinks = [
     "bg-brand-200 text-slate-200",
     "isolate -translate-y-full transition-all duration-300",
     "flex flex-col justify-center items-center gap-10 md:gap-20",
+    "z-[998]",
   )}
 >
   <ul
@@ -57,6 +116,12 @@ const socialLinks = [
         </li>
       ))
     }
+    <li class="nav-links">
+      <a href="" class="flex items-center gap-3">
+        Checkout
+        <Icon pack="ph" name="shopping-cart-simple" size={28} />
+      </a>
+    </li>
   </ul>
 
   <ul class={cx("z-10", "flex gap-5 items-center")}>
@@ -79,6 +144,8 @@ const socialLinks = [
 </nav>
 
 <script>
+  import { PAGES } from "@lib/routes";
+
   const menuBtn = document.getElementById("menu-btn");
   const nav = document.getElementById("nav");
 
@@ -99,6 +166,22 @@ const socialLinks = [
     link.classList.add("text-brand-100");
     break;
   }
+
+  // change nav color on scroll
+  const pageIncluded = [PAGES.shop, PAGES.printing].includes(location as PAGES);
+  const navBar = document.getElementById("menu");
+  const className = "bg-brand-200";
+  if (!pageIncluded) {
+    navBar?.classList.add("bg-brand-200");
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!pageIncluded) return;
+    const show: boolean = window.scrollY >= 30;
+
+    if (show) navBar?.classList.add(className);
+    else navBar?.classList.remove(className);
+  });
 </script>
 
 <style>
