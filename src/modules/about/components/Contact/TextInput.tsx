@@ -13,12 +13,10 @@ export function TextInput(props: InputProps) {
       <label className="label" htmlFor={id}>
         {label}
       </label>
-      <input {...props} 
-        className={cx(
-          "p-2 rounded-md bg-slate-100",
-          "w-full placeholder-brand-200"
-        )}
+      <input
+        {...props}
+        className={cx("p-2 rounded-md bg-slate-100", "w-full")}
       />
     </div>
-  )
+  );
 }
