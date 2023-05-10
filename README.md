@@ -20,8 +20,9 @@ yarn dev # dev server at localhost:3000
 [Golang Mongo Driver](https://pkg.go.dev/go.mongodb.org/mongo-driver@v1.11.6/mongo)
 
 ```sh
-# pre Docker
-go get . # install all dependencies
-go install github.com/cosmtrek/air@latest # hot reloading module (this installs it globally)
-air # dev server at localhost:8080
+# to build and run the container, remove the flag `--build` other wise
+docker compose up --build
+
+# accessing mongosh in the container
+docker exec -it johnson-brooks-db mongosh --username root --pasword root
 ```

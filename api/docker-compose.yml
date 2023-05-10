@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  mongo:
+    container_name: johnson-brooks-db
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./tmp/data:/data/db
+
+  app:
+    container_name: johnson-brooks-api
+    build: .
+    ports:
+      - 8080:8080
+    links:
+      - mongo
+    volumes:
+      - .:/api
+    environment:
+      MONGODB_ADMINUSERNAME: root
+      MONGODB_ADMINPASSWORD: root
+      MONGODB_URL: mongodb://root:root@mongo:27017/
