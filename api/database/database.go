@@ -15,6 +15,7 @@ const (
 	Hangboards string = "hangboards"
 	Monorails  string = "monorails"
 	Boards     string = "boards"
+	Admin      string = "admin"
 )
 
 type Database struct {
