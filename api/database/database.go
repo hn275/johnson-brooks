@@ -17,6 +17,10 @@ const (
 	Boards     string = "boards"
 )
 
+type Database struct {
+	*mongo.Database
+}
+
 func init() {
 	uri = os.Getenv("MONGODB_URL")
 	if uri == "" {
@@ -24,7 +28,7 @@ func init() {
 	}
 }
 
-func New(ctx context.Context) *mongo.Database {
+func New(ctx context.Context) *Database {
 	stableAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(stableAPI)
 	db, err := mongo.Connect(ctx, opts)
@@ -32,13 +36,13 @@ func New(ctx context.Context) *mongo.Database {
 		panic(err)
 	}
 
-	return db.Database("johnson-brooks")
+	return &Database{db.Database("johnson-brooks")}
 }
 
-func Disconnect(db *mongo.Client) {
+func (db *Database) Close() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	if err := db.Disconnect(ctx); err != nil {
+	if err := db.Database.Client().Disconnect(ctx); err != nil {
 		panic(err)
 	}
 }
