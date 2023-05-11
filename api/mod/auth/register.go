@@ -4,49 +4,68 @@ import (
 	"context"
 	"encoding/json"
 	"jb/database"
-	"log"
+	"jb/lib"
 	"net/http"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
-// @controller
 func Register(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
 	var cred Credentials
 	if err := json.NewDecoder(r.Body).Decode(&cred); err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		lib.StdErr(err)
+		return
 	}
 	defer r.Body.Close()
 
 	if err := serializeUser(&cred); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println(err)
+		lib.StdErr(err)
 		return
 	}
 
-	log.Println(cred)
 	result, err := createUser(&cred)
 	if err != nil {
-		panic(err)
+		switch err.(type) {
+		case mongo.WriteError:
+			w.WriteHeader(http.StatusBadRequest)
+			msg := "User exists, try a different username."
+			lib.NewErr(msg).HandleErr(w)
+			return
+
+		default:
+			w.WriteHeader(http.StatusInternalServerError)
+			lib.StdErr(err)
+			return
+		}
 	}
 
-	log.Println(result.InsertedID)
+	insertedID := result.InsertedID.(primitive.ObjectID).String()
+
 	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Write([]byte(insertedID))
 }
 
 func createUser(cred *Credentials) (*mongo.InsertOneResult, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	db := database.New(ctx)
+	// TODO: Set index so no 2 same usernames can exist
+	db := database.New()
 	defer db.Close()
 
 	col := db.Collection(database.Admin)
-	c, can := context.WithTimeout(context.Background(), 5*time.Second)
-	defer can()
-	return col.InsertOne(c, cred)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	return col.InsertOne(ctx, cred)
 }
 
 func serializeUser(cred *Credentials) error {
