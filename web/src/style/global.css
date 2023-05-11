@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer {
+@layer utilities {
+  /*
   .form-control {
     @apply flex flex-col;
   }
@@ -13,5 +14,22 @@
 
   .input {
     @apply p-7;
+  }
+  */
+
+  .btn {
+    @apply px-3 py-2 rounded-md;
+    @apply flex gap-2 justify-center items-center;
+  }
+
+  .btn-primary {
+    @apply bg-brand-100 text-white font-semibold;
+  }
+
+  .text-input {
+    @apply p-2;
+    @apply border-slate-300 border;
+    @apply outline-none focus:border-brand-100;
+    @apply placeholder:text-sm;
   }
 }
