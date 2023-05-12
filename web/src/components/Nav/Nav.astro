@@ -4,6 +4,7 @@ import cx from "classnames";
 import { PAGES, LINKS } from "@lib/routes";
 import { Icon } from "astro-icon";
 import Logo from "./assets/logo.svg";
+import { Cart } from "@components/Cart/Cart";
 
 const navLinks = [
   { text: "Shop", href: PAGES.shop },
@@ -66,6 +67,7 @@ const socialLinks = [
       href=""
       class={cx("text-slate-400 hover:text-slate-50 transition-colors")}
     >
+      <Cart client:load />
       <Icon pack="ph" name="shopping-cart-simple" size={24} />
     </a>
   </div>
