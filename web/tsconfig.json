@@ -9,6 +9,7 @@
       "@lib/*": ["./src/lib/*"],
       "@components/*": ["./src/components/*"],
       "@style/*": ["./src/style/*"],
+      "@schemas/*": ["./src/schemas/*"],
       "@shop/*": ["./src/modules/shop/*"]
     },
     "jsx": "react-jsx",
