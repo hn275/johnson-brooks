@@ -24,5 +24,7 @@ yarn dev # dev server at localhost:3000
 docker compose up --build
 
 # accessing mongosh in the container
-docker exec -it johnson-brooks-db mongosh --username root --pasword root
+docker exec -it johnson-brooks-db mongosh --username root --password root
+# in mongosh
+use johnson-brooks # access the db
 ```
