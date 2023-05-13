@@ -89,6 +89,7 @@ const socialLinks = [
   </span>
 </button>
 
+{/* MOBILE NAV */}
 <nav
   id="nav"
   class={cx(
@@ -118,7 +119,7 @@ const socialLinks = [
     <li class="nav-links">
       <a href="" class="flex items-center gap-3">
         Checkout
-        <Icon pack="ph" name="shopping-cart-simple" size={28} />
+        <Cart client:load />
       </a>
     </li>
   </ul>
