@@ -1,13 +1,13 @@
-import store from "nanostores";
+import { map } from "nanostores";
 
 export type CartItem = {
   productTitle: string;
-  description: number;
+  description: string;
   quantity: number;
   unitPrice: number;
 };
 
-export const cartItem = store.map<Record<string, CartItem>>({});
+export const cartItem = map<Record<string, CartItem>>({});
 
 export function addToCart(id: string, item: CartItem) {
   return () => {

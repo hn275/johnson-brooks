@@ -3,11 +3,10 @@ import cx from "classnames";
 import { cartItem } from "./store";
 import { useStore } from "@nanostores/react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export function Cart() {
-  const items = useStore(cartItem);
-  const itemCount = Object.keys(items).length;
-  const count = itemCount <= 10 ? String(itemCount) : "9+";
+  const counter = useCartCount();
 
   const vars: Variants = {
     hidden: { scale: 0 },
@@ -26,7 +25,7 @@ export function Cart() {
       />
 
       <AnimatePresence>
-        {itemCount !== 0 && (
+        {counter !== 0 && (
           <motion.div
             variants={vars}
             initial="hidden"
@@ -40,10 +39,23 @@ export function Cart() {
               "origin-center",
             )}
           >
-            <p className="text-[0.5rem]">{count}</p>
+            <p className="text-[0.5rem]">{counter <= 9 ? counter : "9+"}</p>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
+}
+
+function useCartCount() {
+  const [counter, setCounter] = useState<number>(0);
+  const items = useStore(cartItem);
+
+  useEffect(() => {
+    let total = 0;
+    Object.values(items).forEach(({ quantity }) => (total += quantity));
+    setCounter(() => total);
+  }, [items]);
+
+  return counter;
 }
