@@ -6,7 +6,7 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export function Cart() {
-  const counter = useCartCount();
+  const show = useCartIndicator();
 
   const vars: Variants = {
     hidden: { scale: 0 },
@@ -14,41 +14,38 @@ export function Cart() {
   };
 
   return (
-    <div className="relative">
-      <BsCart2
-        size={20}
-        className={cx(
-          "text-slate-500 md:text-slate-400",
-          "md:hover:text-slate-600",
-          "transition-colors cursor-pointer",
-        )}
-      />
+    <>
+      <div className="relative">
+        <BsCart2
+          size={20}
+          className={cx(
+            "text-slate-500 md:text-slate-400",
+            "md:hover:text-white",
+            "transition-colors cursor-pointer",
+          )}
+        />
 
-      <AnimatePresence>
-        {counter !== 0 && (
-          <motion.div
-            variants={vars}
-            initial="hidden"
-            animate="show"
-            exit="hidden"
-            className={cx(
-              "absolute -top-2 -right-2",
-              "bg-brand-100 text-brand-200",
-              "rounded-full w-4 h-4",
-              "grid place-items-center",
-              "origin-center",
-            )}
-          >
-            <p className="text-[0.5rem]">{counter <= 9 ? counter : "9+"}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              variants={vars}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              className={cx(
+                "absolute -top-1 -right-1 z-50",
+                "bg-brand-100 rounded-full w-2 h-2",
+              )}
+            ></motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
   );
 }
 
-function useCartCount() {
-  const [counter, setCounter] = useState<number>(0);
+function useCartIndicator() {
+  const [counter, setCounter] = useState<boolean>(false);
   const items = useStore(cartItem);
 
   useEffect(() => {
@@ -62,9 +59,8 @@ function useCartCount() {
   }, []);
 
   useEffect(() => {
-    let total = 0;
-    Object.values(items).forEach(({ quantity }) => (total += quantity));
-    setCounter(() => total);
+    const cartEntries = Object.keys(items);
+    setCounter(() => cartEntries.length !== 0);
   }, [items]);
 
   return counter;

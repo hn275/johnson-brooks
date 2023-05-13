@@ -15,7 +15,7 @@ export interface CartStorage {
 
 export const cartItem = map<Record<string, CartItem>>({});
 
-export function addToCart(id: string, item: CartItem) {
+export function addToCart(id: string, item: CartItem, cb: () => void) {
   return () => {
     const product = cartItem.get()[id];
 
@@ -27,5 +27,6 @@ export function addToCart(id: string, item: CartItem) {
     }
 
     window.localStorage.setItem(CART_STORAGE, JSON.stringify(cartItem.get()));
+    cb();
   };
 }
