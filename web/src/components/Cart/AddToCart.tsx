@@ -1,15 +1,16 @@
 import { BsCart2 } from "react-icons/bs/index";
 import cx from "classnames";
+import { addToCart, CartItem } from "./store";
 
 interface Props {
-  productId: string;
+  productID: string;
+  item: CartItem;
 }
 
-export function AddToCart({ productId }: Props) {
-  const handleClick = () => console.log(productId);
+export function AddToCart({ productID: id, item }: Props) {
   return (
     <button
-      onClick={handleClick}
+      onClick={addToCart(id, item)}
       className={cx(
         "bg-brand-100 text-brand-200 text-sm uppercase",
         "flex items-center justify-center gap-1",
