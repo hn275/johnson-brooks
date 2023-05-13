@@ -7,6 +7,12 @@ export type CartItem = {
   unitPrice: number;
 };
 
+export const CART_STORAGE = "cart_items";
+
+export interface CartStorage {
+  [key: string]: CartItem;
+}
+
 export const cartItem = map<Record<string, CartItem>>({});
 
 export function addToCart(id: string, item: CartItem) {
@@ -16,9 +22,10 @@ export function addToCart(id: string, item: CartItem) {
     if (product) {
       const quantity = product.quantity + item.quantity;
       cartItem.setKey(id, { ...product, quantity });
-      return;
+    } else {
+      cartItem.setKey(id, item);
     }
 
-    cartItem.setKey(id, item);
+    window.localStorage.setItem(CART_STORAGE, JSON.stringify(cartItem.get()));
   };
 }
