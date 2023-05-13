@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	_ "jb/database"
+
 	"github.com/go-chi/chi/v5"
 )
 
