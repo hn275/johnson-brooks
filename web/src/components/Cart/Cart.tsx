@@ -1,6 +1,6 @@
 import { BsCart2 } from "react-icons/bs/index";
 import cx from "classnames";
-import { cartItem } from "./store";
+import { CART_STORAGE, CartStorage, cartItem } from "./store";
 import { useStore } from "@nanostores/react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -50,6 +50,16 @@ export function Cart() {
 function useCartCount() {
   const [counter, setCounter] = useState<number>(0);
   const items = useStore(cartItem);
+
+  useEffect(() => {
+    const cachedCart = window.localStorage.getItem(CART_STORAGE);
+    if (!cachedCart) return;
+
+    const items = JSON.parse(cachedCart) as CartStorage;
+    for (const [k, v] of Object.entries(items)) {
+      cartItem.setKey(k, v);
+    }
+  }, []);
 
   useEffect(() => {
     let total = 0;
