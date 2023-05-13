@@ -20,6 +20,7 @@ type ClimbingProduct struct {
 }
 
 type ClimbingVariant struct {
+	Variant   string `json:"variant" bson:"variant"`
 	Thumbnail string `json:"thumbnail" bson:"thumbnail"`
 	Color     string `json:"color" bson:"color"`
 }
