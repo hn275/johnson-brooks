@@ -64,7 +64,7 @@ const socialLinks = [
     </ul>
 
     <a
-      href=""
+      href={PAGES.checkout}
       class={cx("text-slate-400 hover:text-slate-50 transition-colors")}
     >
       <Cart client:load />
@@ -117,7 +117,7 @@ const socialLinks = [
       ))
     }
     <li class="nav-links">
-      <a href="" class="flex items-center gap-3">
+      <a href={PAGES.checkout} class="flex items-center gap-3">
         Checkout
         <Cart client:load />
       </a>

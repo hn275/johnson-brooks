@@ -3,6 +3,7 @@ import { BsCart2 } from "react-icons/bs/index";
 import cx from "classnames";
 import { addToCart, CartItem } from "./store";
 import { AnimatePresence, Variants, motion } from "framer-motion";
+import { PAGES } from "@lib/routes";
 
 interface Props {
   productID: string;
@@ -54,7 +55,7 @@ export function AddToCart({ productID: id, item }: Props) {
               &nbsp;added to cart!
             </p>
 
-            <a className="underline italic" href="">
+            <a className="underline italic" href={PAGES.checkout}>
               Checkout now.
             </a>
           </motion.div>
