@@ -1,10 +1,18 @@
 ---
 import type { Product } from "src/pages/index.astro";
 import cx from "classnames";
-import { Icon } from "astro-icon";
+import { AddToCart } from "@components/Cart/AddToCart";
+import type { CartItem } from "@components/Cart/store";
 
-const { title, src, price, inventory, material, description } =
+const { title, src, price, inventory, material, description, id } =
   Astro.props as Product;
+
+const cartItem: CartItem = {
+  description,
+  quantity: 1,
+  unitPrice: price,
+  productTitle: title,
+};
 ---
 
 <div
@@ -31,17 +39,6 @@ const { title, src, price, inventory, material, description } =
       <p>Price: ${price.toFixed(2)}</p>
     </div>
 
-    <button
-      class={cx(
-        "bg-brand-100 text-brand-200 text-sm uppercase",
-        "flex items-center justify-center gap-1",
-        "hover:brightness-110 rounded-md p-3",
-      )}
-    >
-      Add to cart&nbsp;
-      <span>
-        <Icon pack="ph" name="shopping-cart-light" size={18} />
-      </span>
-    </button>
+    <AddToCart client:load productID={id as string} item={cartItem} />
   </div>
 </div>
