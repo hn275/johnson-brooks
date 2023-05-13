@@ -4,7 +4,7 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 // NOTE: `Thumbnail` is a base64 encoded string of bytearray of an image
 type Product struct {
-	ID          primitive.ObjectID `json:"id" bson:"id,omitempty"`
+	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Title       string             `json:"title" bson:"title"`
 	Thumbnail   string             `json:"thumbnail" bson:"thumbnail"`
 	Description string             `json:"description" bson:"description"`
