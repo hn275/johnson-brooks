@@ -1,17 +1,12 @@
 package auth
 
 import (
-	"context"
 	"encoding/json"
-	"jb/database"
 	"jb/lib"
 	"net/http"
-	"time"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/bson"
-	"golang.org/x/crypto/bcrypt"
 	"github.com/teris-io/shortid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -28,13 +23,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	result := struct{
-		Username string
-		Password string
-	}{}
-	err := findUser(&cred).Decode(&result)
+	db := newDb()
+
+	result := Credentials{}
+	err := db.findUser(&cred).Decode(&result)
 	if err != nil {
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusNotFound)
 		msg := "No Account Found"
 		lib.NewErr(msg).HandleErr(w)
 		return
@@ -50,34 +44,28 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sid, err := shortid.New(1, shortid.DefaultABC, 2342)
-	session, err := sid.Generate()
+	sessionID, err := sid.Generate()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		msg := "Error generating SID (session)"
 		lib.NewErr(msg).HandleErr(w)
 		return
 	}
-	
-	addSessionToUser(session)
 
-	w.WriteHeader(http.StatusAccepted)
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Write([]byte(session))
-}
+	if err := db.addSessionToUser(cred.Username, sessionID); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		msg := "Session did not add"
+		lib.StdErr(msg)
+		return
+	}
 
-func findUser(cred *Credentials) (*mongo.SingleResult) {
-	db := database.New()
-	defer db.Close()
 
-	col := db.Collection(database.Admin)
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	http.SetCookie(w, &http.Cookie{
+		Name: "SessionID",
+		Value: sessionID,
+		HttpOnly: true,
+		MaxAge: 15 * 60,
+	})
+	w.WriteHeader(http.StatusOK)
 
-	filter := bson.D{{"Username", cred.Username}}
-
-	return col.FindOne(ctx, filter)
-}
-
-func addSessionToUser(session string) (*mongo.InsertOneResult, error) {
-	//TODO: Add session to user
 }
