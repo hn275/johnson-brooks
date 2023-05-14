@@ -24,13 +24,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	db := newDb()
+	defer db.Close()
 
 	result := Credentials{}
 	err := db.findUser(&cred).Decode(&result)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		msg := "No Account Found"
-		lib.NewErr(msg).HandleErr(w)
+		lib.NewErr("No Account Found").HandleErr(w)
 		return
 	}
 
@@ -38,8 +38,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		msg := "Invalid password"
-		lib.NewErr(msg).HandleErr(w)
+		lib.NewErr("Invalid password").HandleErr(w)
 		return
 	}
 
@@ -47,15 +46,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	sessionID, err := sid.Generate()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		msg := "Error generating SID (session)"
-		lib.NewErr(msg).HandleErr(w)
+		lib.NewErr("Error generating SID (session)").HandleErr(w)
 		return
 	}
 
 	if err := db.addSessionToUser(cred.Username, sessionID); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		msg := "Session did not add"
-		lib.StdErr(msg)
+		lib.StdErr(err)
 		return
 	}
 
