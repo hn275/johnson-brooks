@@ -1,0 +1,15 @@
+---
+import cx from "classnames";
+import "@style/global.css";
+import Login from "@modules/admin/auth/Login";
+---
+
+<section class={cx("w-full h-[100vh] bg-slate-50", "grid place-items-center")}>
+  <div class="p-10 bg-white shadow-lg shadow-slate-900/5">
+    <h1 class="text-lg font-semibold text-brand-100">Admin Login</h1>
+
+    <div class="mt-10">
+      <Login client:load />
+    </div>
+  </div>
+</section>

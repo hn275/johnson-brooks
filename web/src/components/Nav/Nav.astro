@@ -4,6 +4,7 @@ import cx from "classnames";
 import { PAGES, LINKS } from "@lib/routes";
 import { Icon } from "astro-icon";
 import Logo from "./assets/logo.svg";
+import { Cart } from "@components/Cart/Cart";
 
 const navLinks = [
   { text: "Shop", href: PAGES.shop },
@@ -21,7 +22,7 @@ const socialLinks = [
   id="menu"
   class={cx(
     "fixed top-0 left-0 right-0 z-[999]",
-    "transition-all p-1 md:p-3",
+    "transition-all p-2 md:p-3",
     "flex justify-between items-center",
     "md:grid grid-cols-nav place-items-center",
   )}
@@ -63,10 +64,10 @@ const socialLinks = [
     </ul>
 
     <a
-      href=""
+      href={PAGES.checkout}
       class={cx("text-slate-400 hover:text-slate-50 transition-colors")}
     >
-      <Icon pack="ph" name="shopping-cart-simple" size={24} />
+      <Cart client:load />
     </a>
   </div>
 </div>
@@ -75,7 +76,7 @@ const socialLinks = [
   id="menu-btn"
   aria-label="menu button"
   class={cx(
-    "fixed -top-1 right-0",
+    "fixed top-0 right-0",
     "hamburger hamburger--squeeze",
     "text-slate-900",
     "hover:brightness-125",
@@ -88,6 +89,7 @@ const socialLinks = [
   </span>
 </button>
 
+{/* MOBILE NAV */}
 <nav
   id="nav"
   class={cx(
@@ -115,9 +117,9 @@ const socialLinks = [
       ))
     }
     <li class="nav-links">
-      <a href="" class="flex items-center gap-3">
+      <a href={PAGES.checkout} class="flex items-center gap-3">
         Checkout
-        <Icon pack="ph" name="shopping-cart-simple" size={28} />
+        <Cart client:load />
       </a>
     </li>
   </ul>
