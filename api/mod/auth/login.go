@@ -70,7 +70,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 // TODO: test this
-func authenticateUser(cred, user Credentials, db *AuthDatabase) error {
+func authenticateUser(cred, user Credentials, db *authDatabase) error {
 	if user.Session.FailedAttempts >= 5 {
 		if err := db.lockUser(user.ID); err != nil {
 			return err

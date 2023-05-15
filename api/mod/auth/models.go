@@ -27,15 +27,15 @@ type Session struct {
 	Locked         bool   `bson:"locked"`
 }
 
-type AuthDatabase struct {
+type authDatabase struct {
 	*database.Database
 }
 
-func newDb() *AuthDatabase {
-	return &AuthDatabase{database.New()}
+func newDb() *authDatabase {
+	return &authDatabase{database.New()}
 }
 
-func (db *AuthDatabase) addSessionToUser(id primitive.ObjectID, sessionID string) error {
+func (db *authDatabase) addSessionToUser(id primitive.ObjectID, sessionID string) error {
 	filter := bson.D{{Key: "_id", Value: id}}
 	value := bson.D{{Key: "session.sessionID", Value: sessionID}}
 	ops := bson.D{{Key: "$set", Value: value}}
@@ -48,7 +48,7 @@ func (db *AuthDatabase) addSessionToUser(id primitive.ObjectID, sessionID string
 
 }
 
-func (db *AuthDatabase) findUser(user *Credentials) *mongo.SingleResult {
+func (db *authDatabase) findUser(user *Credentials) *mongo.SingleResult {
 	col := db.Collection(database.Admin)
 
 	ctx, cancel := context.WithTimeout(context.Background(), database.Timeout)
@@ -59,7 +59,7 @@ func (db *AuthDatabase) findUser(user *Credentials) *mongo.SingleResult {
 	return col.FindOne(ctx, filter)
 }
 
-func (db *AuthDatabase) authFailed(id primitive.ObjectID) error {
+func (db *authDatabase) authFailed(id primitive.ObjectID) error {
 	col := db.Collection(database.Admin)
 
 	ctx, cancel := context.WithTimeout(context.Background(), database.Timeout)
@@ -77,7 +77,7 @@ func (db *AuthDatabase) authFailed(id primitive.ObjectID) error {
 	return nil
 }
 
-func (db *AuthDatabase) lockUser(id primitive.ObjectID) error {
+func (db *authDatabase) lockUser(id primitive.ObjectID) error {
 	col := db.Collection(database.Admin)
 
 	ctx, cancel := context.WithTimeout(context.Background(), database.Timeout)
