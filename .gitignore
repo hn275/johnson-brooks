@@ -23,3 +23,5 @@ web/.DS_Store
 
 # API ignore
 api/tmp
+
+**/*/.env

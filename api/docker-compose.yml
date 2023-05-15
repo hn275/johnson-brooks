@@ -10,6 +10,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
       - ./tmp/data:/data/db
+    ports:
+      - 27017:27017
 
   app:
     container_name: johnson-brooks-api
