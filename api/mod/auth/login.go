@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"jb/lib"
+	"log"
 	"net/http"
 
 	"github.com/teris-io/shortid"
@@ -35,7 +36,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := authenticateUser(cred, user, db); err != nil {
+	if err := authenticateUser(&cred, &user, db); err != nil {
 		if errors.Is(err, ErrAuthFailed) {
 			w.WriteHeader(http.StatusUnauthorized)
 			lib.NewErr("Authentication failed").HandleErr(w)
@@ -69,10 +70,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// TODO: test this
-func authenticateUser(cred, user Credentials, db *authDatabase) error {
-	if user.Session.FailedAttempts >= 5 {
-		if err := db.lockUser(user.ID); err != nil {
+func authenticateUser(cred, user *Credentials, db *authDatabase) error {
+	if user.Session.FailedAttempts >= 4 {
+		if err := db.lockUser(user); err != nil {
 			return err
 		}
 		return ErrAuthFailed
@@ -86,6 +86,7 @@ func authenticateUser(cred, user Credentials, db *authDatabase) error {
 	}
 
 	if err := db.authFailed(user.ID); err != nil {
+		log.Fatal(err)
 		return err
 	}
 

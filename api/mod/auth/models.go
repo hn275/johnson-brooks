@@ -77,18 +77,28 @@ func (db *authDatabase) authFailed(id primitive.ObjectID) error {
 	return nil
 }
 
-func (db *authDatabase) lockUser(id primitive.ObjectID) error {
+func (db *authDatabase) lockUser(user *Credentials) error {
 	col := db.Collection(database.Admin)
 
 	ctx, cancel := context.WithTimeout(context.Background(), database.Timeout)
 	defer cancel()
 
-	value := bson.D{
+	sessionSet := bson.D{
 		{Key: "session.locked", Value: true},
 		{Key: "session.sessionID", Value: ""},
 	}
-	update := bson.D{{Key: "$set", Value: value}}
+	sessionInc := bson.D{{Key: "session.failedAttempts", Value: 1}}
+	update := bson.D{
+		{Key: "$set", Value: sessionSet},
+		{Key: "$inc", Value: sessionInc},
+	}
 
-	_, err := col.UpdateByID(ctx, id, update)
-	return err
+	_, err := col.UpdateByID(ctx, user.ID, update)
+	if err != nil {
+		return err
+	}
+
+	user.Session.Locked = true
+	user.Session.FailedAttempts++
+	return nil
 }
