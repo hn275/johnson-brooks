@@ -10,6 +10,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
       - ./tmp/data:/data/db
+    ports:
+      - 27017:27017
 
   app:
     container_name: johnson-brooks-api
@@ -21,6 +23,5 @@ services:
     volumes:
       - .:/api
     environment:
-      MONGODB_ADMINUSERNAME: root
-      MONGODB_ADMINPASSWORD: root
-      MONGODB_URL: mongodb://root:root@mongo:27017/
+      MONGODB_URL:
+      APP_ENV:
