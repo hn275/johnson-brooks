@@ -34,8 +34,10 @@ func init() {
 func New() *Database {
 	ctx, cancel := context.WithTimeout(context.Background(), Timeout)
 	defer cancel()
+
 	stableAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(stableAPI)
+
 	db, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		panic(err)
@@ -47,7 +49,25 @@ func New() *Database {
 func (db *Database) Close() {
 	ctx, cancel := context.WithTimeout(context.Background(), Timeout)
 	defer cancel()
+
 	if err := db.Database.Client().Disconnect(ctx); err != nil {
 		panic(err)
 	}
+}
+
+func DatabaseTestUtil() *Database {
+	uri := "mongodb://root:root@127.0.0.1:27017/"
+
+	ctx, cancel := context.WithTimeout(context.Background(), Timeout)
+	defer cancel()
+
+	stableAPI := options.ServerAPI(options.ServerAPIVersion1)
+	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(stableAPI)
+
+	db, err := mongo.Connect(ctx, opts)
+	if err != nil {
+		panic(err)
+	}
+
+	return &Database{db.Database("johnson-brooks")}
 }
