@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"errors"
 	"jb/lib"
 	"net/http"
 
@@ -26,43 +27,76 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	db := newDb()
 	defer db.Close()
 
-	result := Credentials{}
-	err := db.findUser(&cred).Decode(&result)
+	var user Credentials
+	err := db.findUser(&cred).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		lib.NewErr("No Account Found").HandleErr(w)
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(cred.Password))
-
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		lib.NewErr("Invalid password").HandleErr(w)
-		return
-	}
-
-	sid, err := shortid.New(1, shortid.DefaultABC, 2342)
-	sessionID, err := sid.Generate()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		lib.NewErr("Error generating SID (session)").HandleErr(w)
-		return
-	}
-
-	if err := db.addSessionToUser(cred.Username, sessionID); err != nil {
+	if err := authenticateUser(cred, user, db); err != nil {
+		if errors.Is(err, ErrAuthFailed) {
+			w.WriteHeader(http.StatusUnauthorized)
+			lib.NewErr("Authentication failed").HandleErr(w)
+			return
+		}
 		w.WriteHeader(http.StatusInternalServerError)
 		lib.StdErr(err)
 		return
 	}
 
+	sessionID, err := getSessionID()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		lib.StdErr(err)
+		return
+	}
 
-	http.SetCookie(w, &http.Cookie{
-		Name: "SessionID",
-		Value: sessionID,
+	if err := db.addSessionToUser(user.ID, sessionID); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		lib.StdErr(err)
+		return
+	}
+
+	c := http.Cookie{
+		Name:     "SessionID",
+		Value:    sessionID,
 		HttpOnly: true,
-		MaxAge: 15 * 60,
-	})
+		MaxAge:   15 * 60, // NOTE: 15 minutes
+	}
+	http.SetCookie(w, &c)
 	w.WriteHeader(http.StatusOK)
+}
 
+// TODO: test this
+func authenticateUser(cred, user Credentials, db *AuthDatabase) error {
+	if user.Session.FailedAttempts >= 5 {
+		if err := db.lockUser(user.ID); err != nil {
+			return err
+		}
+		return ErrAuthFailed
+	}
+
+	plain := []byte(cred.Password)
+	hashed := []byte(user.Password)
+	err := bcrypt.CompareHashAndPassword(hashed, plain)
+	if err == nil {
+		return nil
+	}
+
+	if err := db.authFailed(user.ID); err != nil {
+		return err
+	}
+
+	return ErrAuthFailed
+}
+
+func getSessionID() (string, error) {
+	sid, err := shortid.New(1, shortid.DefaultABC, 2342)
+	if err != nil {
+		return "", err
+	}
+
+	return sid.Generate()
 }
