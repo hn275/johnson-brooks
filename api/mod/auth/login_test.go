@@ -92,7 +92,7 @@ func findTestUser(admin *Credentials, db *authDatabase) {
 	}
 }
 
-func setup() {
+func setup() primitive.ObjectID {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(testUser.Password), 10)
 	if err != nil {
 		log.Fatal(err)
@@ -109,18 +109,21 @@ func setup() {
 		log.Fatal(err)
 	}
 
-	testUser.ID = result.InsertedID.(primitive.ObjectID)
+	return result.InsertedID.(primitive.ObjectID)
+
 }
 
-func cleanup() {
-	db := database.New()
-	defer db.Close()
+func cleanup(id primitive.ObjectID) func() {
+	return func() {
+		db := database.New()
+		defer db.Close()
 
-	col := db.Collection(database.Admin)
-	filter := bson.D{{Key: "_id", Value: testUser.ID}}
+		col := db.Collection(database.Admin)
+		filter := bson.D{{Key: "_id", Value: id}}
 
-	_, err := col.DeleteOne(context.TODO(), filter)
-	if err != nil {
-		log.Fatal(err)
+		_, err := col.DeleteOne(context.TODO(), filter)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
