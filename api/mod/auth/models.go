@@ -83,7 +83,10 @@ func (db *AuthDatabase) lockUser(id primitive.ObjectID) error {
 	ctx, cancel := context.WithTimeout(context.Background(), database.Timeout)
 	defer cancel()
 
-	value := bson.D{{Key: "session.locked", Value: true}}
+	value := bson.D{
+		{Key: "session.locked", Value: true},
+		{Key: "session.sessionID", Value: ""},
+	}
 	update := bson.D{{Key: "$set", Value: value}}
 
 	_, err := col.UpdateByID(ctx, id, update)
