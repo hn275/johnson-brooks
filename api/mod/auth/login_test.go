@@ -12,36 +12,30 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var testUser Credentials = Credentials{
-	Username: "test_foo",
-	Password: "test_bar",
-	Session: Session{
-		SessionID:      "",
-		FailedAttempts: 0,
-		Locked:         false,
-	},
-}
-
-var testCredential Credentials = Credentials{
-	Username: "test_foo",
-	Password: "test_bar",
-}
-
 func TestAuthOK(t *testing.T) {
-	setup()
-	t.Cleanup(cleanup)
+	user := setup()
+	t.Cleanup(cleanup(user))
+
+	cred := Credentials{
+		Username: user.Username,
+		Password: "test_bar",
+	}
 
 	db := newDb()
+	defer db.Close()
 
-	user := testUser
-	if err := authenticateUser(&testCredential, &user, db); err != nil {
+	if err := authenticateUser(&cred, &user, db); err != nil {
 		t.Fatalf("expect `err == nil`, got `%v`", err)
+	}
+
+	if user.Session.SessionID == "" {
+		t.Fatalf("failed to save session ID")
 	}
 }
 
 func TestAuthFailed(t *testing.T) {
-	setup()
-	t.Cleanup(cleanup)
+	user := setup()
+	t.Cleanup(cleanup(user))
 
 	db := newDb()
 	defer db.Close()
@@ -50,7 +44,6 @@ func TestAuthFailed(t *testing.T) {
 		Username: "test_for",
 		Password: "asldfkdlsjf",
 	}
-	user := testUser
 
 	for i := 0; i < 5; i++ {
 		err := authenticateUser(&failedCred, &user, db)
@@ -74,6 +67,7 @@ func TestAuthFailed(t *testing.T) {
 				user.Session.FailedAttempts,
 			)
 		}
+
 	}
 
 	isLocked := user.Session.FailedAttempts >= 5 && user.Session.Locked
@@ -83,6 +77,50 @@ func TestAuthFailed(t *testing.T) {
 
 }
 
+func TestFindByUsernamePanic(t *testing.T) {
+	user := Credentials{}
+
+	db := newDb()
+	defer db.Close()
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatalf("not panic with missing username")
+		}
+	}()
+
+	db.findByUsername(&user)
+}
+
+func TestFindByUsernameErr(t *testing.T) {
+	user := setup()
+	t.Cleanup(cleanup(user))
+
+	user.Username = "test_baz"
+
+	db := newDb()
+	if err := db.findByUsername(&user).Err; err == nil {
+		t.Fatalf("expect `err`, got `nil`")
+	}
+}
+
+func TestLockUser(t *testing.T) {
+	user := setup()
+	t.Cleanup(cleanup(user))
+
+	db := newDb()
+	defer db.Close()
+	if err := db.lockUser(&user); err != nil {
+		t.Fatal(err)
+	}
+
+	findTestUser(&user, db)
+	if !user.Session.Locked {
+		t.Fatalf("failed to lock user. expected `true`, got %v", user.Session.Locked)
+	}
+}
+
+/* TEST UTIL */
 func findTestUser(admin *Credentials, db *authDatabase) {
 	ctx := context.TODO()
 	filter := bson.D{{Key: "_id", Value: admin.ID}}
@@ -92,7 +130,17 @@ func findTestUser(admin *Credentials, db *authDatabase) {
 	}
 }
 
-func setup() primitive.ObjectID {
+func setup() Credentials {
+	testUser := Credentials{
+		Username: "test_foo",
+		Password: "test_bar",
+		Session: Session{
+			SessionID:      "",
+			FailedAttempts: 0,
+			Locked:         false,
+		},
+	}
+
 	hashed, err := bcrypt.GenerateFromPassword([]byte(testUser.Password), 10)
 	if err != nil {
 		log.Fatal(err)
@@ -109,17 +157,18 @@ func setup() primitive.ObjectID {
 		log.Fatal(err)
 	}
 
-	return result.InsertedID.(primitive.ObjectID)
+	testUser.ID = result.InsertedID.(primitive.ObjectID)
 
+	return testUser
 }
 
-func cleanup(id primitive.ObjectID) func() {
+func cleanup(user Credentials) func() {
 	return func() {
 		db := database.New()
 		defer db.Close()
 
 		col := db.Collection(database.Admin)
-		filter := bson.D{{Key: "_id", Value: id}}
+		filter := bson.D{{Key: "_id", Value: user.ID}}
 
 		_, err := col.DeleteOne(context.TODO(), filter)
 		if err != nil {

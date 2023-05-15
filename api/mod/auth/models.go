@@ -35,8 +35,8 @@ func newDb() *authDatabase {
 	return &authDatabase{database.New()}
 }
 
-func (db *authDatabase) addSessionToUser(id primitive.ObjectID, sessionID string) error {
-	filter := bson.D{{Key: "_id", Value: id}}
+func (db *authDatabase) addSessionToUser(user *Credentials, sessionID string) error {
+	filter := bson.D{{Key: "_id", Value: user.ID}}
 	value := bson.D{{Key: "session.sessionID", Value: sessionID}}
 	ops := bson.D{{Key: "$set", Value: value}}
 
@@ -44,11 +44,19 @@ func (db *authDatabase) addSessionToUser(id primitive.ObjectID, sessionID string
 	defer cancel()
 
 	_, err := db.Collection(database.Admin).UpdateOne(ctx, filter, ops)
-	return err
+	if err != nil {
+		return err
+	}
 
+	user.Session.SessionID = sessionID
+	return nil
 }
 
-func (db *authDatabase) findUser(user *Credentials) *mongo.SingleResult {
+func (db *authDatabase) findByUsername(user *Credentials) *mongo.SingleResult {
+	if user.Username == "" {
+		panic("missing struct field `Username` empty")
+	}
+
 	col := db.Collection(database.Admin)
 
 	ctx, cancel := context.WithTimeout(context.Background(), database.Timeout)

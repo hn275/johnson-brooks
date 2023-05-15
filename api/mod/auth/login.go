@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"jb/lib"
-	"log"
 	"net/http"
 
 	"github.com/teris-io/shortid"
@@ -29,40 +28,28 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var user Credentials
-	err := db.findUser(&cred).Decode(&user)
+	err := db.findByUsername(&cred).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		lib.NewErr("No Account Found").HandleErr(w)
 		return
 	}
 
-	if err := authenticateUser(&cred, &user, db); err != nil {
+	err = authenticateUser(&cred, &user, db)
+	if err == nil {
 		if errors.Is(err, ErrAuthFailed) {
 			w.WriteHeader(http.StatusUnauthorized)
 			lib.NewErr("Authentication failed").HandleErr(w)
-			return
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			lib.StdErr(err)
 		}
-		w.WriteHeader(http.StatusInternalServerError)
-		lib.StdErr(err)
-		return
-	}
-
-	sessionID, err := getSessionID()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		lib.StdErr(err)
-		return
-	}
-
-	if err := db.addSessionToUser(user.ID, sessionID); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		lib.StdErr(err)
 		return
 	}
 
 	c := http.Cookie{
 		Name:     "SessionID",
-		Value:    sessionID,
+		Value:    user.Session.SessionID,
 		HttpOnly: true,
 		MaxAge:   15 * 60, // NOTE: 15 minutes
 	}
@@ -81,16 +68,23 @@ func authenticateUser(cred, user *Credentials, db *authDatabase) error {
 	plain := []byte(cred.Password)
 	hashed := []byte(user.Password)
 	err := bcrypt.CompareHashAndPassword(hashed, plain)
-	if err == nil {
-		return nil
+	if err != nil {
+		if err := db.authFailed(user.ID); err != nil {
+			return err
+		}
+		return ErrAuthFailed
 	}
 
-	if err := db.authFailed(user.ID); err != nil {
-		log.Fatal(err)
+	sessionID, err := getSessionID()
+	if err != nil {
 		return err
 	}
 
-	return ErrAuthFailed
+	if err := db.addSessionToUser(user, sessionID); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func getSessionID() (string, error) {
