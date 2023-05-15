@@ -28,6 +28,7 @@ func TestAuthOK(t *testing.T) {
 		t.Fatalf("expect `err == nil`, got `%v`", err)
 	}
 
+	findTestUser(&user, db)
 	if user.Session.SessionID == "" {
 		t.Fatalf("failed to save session ID")
 	}
