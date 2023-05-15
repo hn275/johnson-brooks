@@ -11,6 +11,8 @@ import (
 
 var uri string
 
+const Timeout = 5 * time.Second
+
 const (
 	Hangboards string = "hangboards"
 	Monorails  string = "monorails"
@@ -30,7 +32,7 @@ func init() {
 }
 
 func New() *Database {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), Timeout)
 	defer cancel()
 	stableAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(stableAPI)
@@ -43,7 +45,7 @@ func New() *Database {
 }
 
 func (db *Database) Close() {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), Timeout)
 	defer cancel()
 	if err := db.Database.Client().Disconnect(ctx); err != nil {
 		panic(err)
