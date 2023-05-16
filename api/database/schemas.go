@@ -4,13 +4,14 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 // PRODUCT
 type Product struct {
-	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Title       string             `json:"title" bson:"title"`
-	Thumbnail   string             `json:"thumbnail" bson:"thumbnail"` // base64 encoding of bytearray
-	Description string             `json:"description" bson:"description"`
-	Material    string             `json:"material" bson:"material"`
-	Price       float32            `json:"price" bson:"price"`
-	Inventory   uint16             `json:"inventory" bson:"inventory"`
+	ID            primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Title         string             `json:"title" bson:"title"`
+	Thumbnail     string             `json:"thumbnail" bson:"-"` // base64 encoding of bytearray
+	ThumbnailData []byte             `json:"-" bson:"thumbnailBin"`
+	Description   string             `json:"description" bson:"description"`
+	Material      string             `json:"material" bson:"material"`
+	Price         float32            `json:"price" bson:"price"`
+	Inventory     uint16             `json:"inventory" bson:"inventory"`
 }
 
 type ClimbingProduct struct {
