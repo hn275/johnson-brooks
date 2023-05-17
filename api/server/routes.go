@@ -15,5 +15,5 @@ func RouteServer(r *chi.Mux) {
 		})
 	})
 
-	r.Handle("/", http.HandlerFunc(product.T))
+	r.Handle("/", http.HandlerFunc(product.GetProducts))
 }
