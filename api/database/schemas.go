@@ -10,7 +10,7 @@ import (
 // PRODUCT
 type Product struct {
 	ObjectID      primitive.ObjectID `json:"-" bson:"_id,omitempty"`
-	ID            string             `json:"id"`
+	ID            string             `json:"id" bson:"-"`
 	Title         string             `json:"title" bson:"title"`
 	Thumbnail     string             `json:"thumbnail" bson:"-"` // base64 encoding of bytearray
 	ThumbnailData []byte             `json:"-" bson:"thumbnail"`
