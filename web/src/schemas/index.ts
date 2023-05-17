@@ -24,3 +24,20 @@ export enum Depth {
   lg = "20mm",
   custom = "Custom",
 }
+
+export type Product = {
+  id: string;
+  title: string;
+  thumbnail: string;
+  description: string;
+  material: string;
+  price: number;
+  inventory: number;
+};
+
+export type ProductVariant = {
+  variant: string;
+  thumbnail: string;
+  color: string;
+  inventory: number;
+};

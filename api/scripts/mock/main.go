@@ -55,13 +55,26 @@ func buildProduct(src []byte, title string) database.Product {
 	}
 
 	return database.Product{
-		Thumbnail:     image.Base64(),
-		ThumbnailData: image.Bytes(),
-		Title:         title,
-		Price:         69,
-		Material:      "test",
-		Inventory:     420,
-		Description:   "Amet voluptates ipsum ea natus suscipit! Rerum unde quam dolores?",
+		Variants: []database.ProductVariant{
+			{
+				Variant:       "main",
+				Thumbnail:     image.Base64(),
+				ThumbnailData: image.Bytes(),
+				Color:         "#1e1e1e",
+				Inventory:     420,
+			},
+			{
+				Variant:       "white",
+				Thumbnail:     image.Base64(),
+				ThumbnailData: image.Bytes(),
+				Color:         "#ffffff",
+				Inventory:     420,
+			},
+		},
+		Title:       title,
+		Price:       69,
+		Material:    "test",
+		Description: "Amet voluptates ipsum ea natus suscipit! Rerum unde quam dolores?",
 	}
 }
 
