@@ -27,7 +27,7 @@ func main() {
 
 func createHangboard(db *database.Database) {
 	fmt.Printf("\nMocking hangboard")
-	f, err := os.ReadFile("./scripts/seeds/oak.jpg")
+	f, err := os.ReadFile("./scripts/mock/oak.jpg")
 	if err != nil {
 		log.Fatal(err)
 	}
