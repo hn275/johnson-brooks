@@ -24,5 +24,3 @@ case $1 in
         echo "usage: [mock|test]"
         ;;
 esac
-
-[[ -n "${container}" ]] && docker compose down &> /dev/null
