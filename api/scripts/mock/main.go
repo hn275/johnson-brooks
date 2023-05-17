@@ -22,17 +22,18 @@ func main() {
 	}
 
 	createAdmin(db)
-	createHangboard(db)
+	createHangboard(db, "oak")
+	createHangboard(db, "hangboard")
 }
 
-func createHangboard(db *database.Database) {
-	fmt.Printf("\nMocking hangboard")
-	f, err := os.ReadFile("./scripts/mock/oak.jpg")
+func createHangboard(db *database.Database, img string) {
+	imgSrc := fmt.Sprintf("./scripts/mock/%s.jpg", img)
+	f, err := os.ReadFile(imgSrc)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	prod := buildProduct(f, "Hangboard")
+	prod := buildProduct(f, img)
 	trx := db.Collection(database.Hangboards)
 	i, err := trx.InsertOne(context.TODO(), &prod)
 	if err != nil {
