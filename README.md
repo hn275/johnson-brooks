@@ -8,6 +8,8 @@
 
 [React](https://react.dev/reference/react)
 
+### Commands
+
 ```sh
 yarn # install all dependencies
 yarn dev # dev server at localhost:3000
@@ -18,6 +20,12 @@ yarn dev # dev server at localhost:3000
 [Chi](https://github.com/go-chi/chi) - V5
 
 [Golang Mongo Driver](https://pkg.go.dev/go.mongodb.org/mongo-driver@v1.11.6/mongo)
+
+### Generate env
+
+```sh
+cat env-example > .env
+```
 
 ### Dev server at `:8080`
 
