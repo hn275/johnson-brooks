@@ -22,6 +22,5 @@
   .carousel-btn {
     @apply bg-slate-50 opacity-50 rounded-full p-1 w-5 h-5 transition-all;
     @apply group-hover:opacity-90;
-    @apply absolute top-1/2 -translate-y-1/2;
   }
 }
