@@ -1,10 +1,11 @@
 ---
-import type { Product } from "src/pages/index.astro";
+import type { Product } from "@schemas/index";
 import cx from "classnames";
 import { AddToCart } from "@components/Cart/AddToCart";
 import type { CartItem } from "@components/Cart/store";
+import { Carousel } from "./Carousel";
 
-const { title, src, price, inventory, material, description, id } =
+const { title, price, material, description, id, variants } =
   Astro.props as Product;
 
 const cartItem: CartItem = {
@@ -18,26 +19,15 @@ const cartItem: CartItem = {
 <div
   class={cx("bg-white p-3 shadow-lg shadow-slate-400/20 rounded-md", "w-full")}
 >
-  <img
-    loading="lazy"
-    src={`data:image/png;base64,${src}`}
-    alt={title}
-    class="w-full rounded-sm"
-  />
+  <Carousel client:load variants={variants} />
 
-  <div class="mt-6 flex flex-col gap-3">
-    <h3 class="text-lg font-semibold text-brand-200">{title}</h3>
-
-    <p class={cx("text-xs text-brand-200")}>
-      {material}
-    </p>
+  <div class="mt-3 flex flex-col gap-3">
+    <div>
+      <h3 class="text-lg font-semibold text-brand-200">{title}</h3>
+      <p class="text-sm">${price.toFixed(2)}</p>
+    </div>
 
     <p>{description}</p>
-
-    <div class="text-sm">
-      <p>Inventory: {inventory}</p>
-      <p>Price: ${price.toFixed(2)}</p>
-    </div>
 
     <AddToCart client:load productID={id as string} item={cartItem} />
   </div>
