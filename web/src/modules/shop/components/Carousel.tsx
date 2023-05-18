@@ -12,7 +12,7 @@ export function Carousel({ variants }: Props) {
   const hasVariants = variants.length > 1;
 
   return (
-    <div className="text-xs text-slate-600">
+    <>
       <div className="relative isolate">
         <img
           src={`data:image/png;base64,${variant?.thumbnail}`}
@@ -61,7 +61,7 @@ export function Carousel({ variants }: Props) {
 
         <p>Inventory: {variant.inventory}</p>
       </div>
-    </div>
+    </>
   );
 }
 
