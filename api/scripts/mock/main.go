@@ -29,9 +29,9 @@ func main() {
 	createAdmin(db)
 
 	fmt.Printf("\n\thangboard")
-	createHangboard(db, "oak")
-	createHangboard(db, "hangboard")
-	createHangboard(db, "classic")
+	for _, v := range []string{"oak", "hangboard", "classic"} {
+		createHangboard(db, v)
+	}
 	fmt.Printf("\tOK")
 
 	fmt.Printf("\n\tMonorail")
