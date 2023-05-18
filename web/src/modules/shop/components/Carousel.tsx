@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ProductVariant } from "@schemas/index";
 import cx from "classnames";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs/index";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai/index";
 
 interface Props {
   variants: ProductVariant[];
@@ -13,7 +13,7 @@ export function Carousel({ variants }: Props) {
 
   return (
     <div className="text-xs text-slate-600">
-      <div className="relative isolate group">
+      <div className="relative isolate">
         <img
           src={`data:image/png;base64,${variant?.thumbnail}`}
           className="w-full"
@@ -21,28 +21,34 @@ export function Carousel({ variants }: Props) {
 
         {hasVariants && (
           <>
-            <BsChevronLeft
-              className={cx("-left-2 carousel-btn")}
-              role="button"
-              onClick={onPrev}
-              title="previous variant"
-            />
+            <div className="flex justify-center items-center gap-3">
+              <AiOutlineArrowLeft
+                className={cx("-left-2 carousel-btn")}
+                role="button"
+                onClick={onPrev}
+                title="previous variant"
+              />
 
-            <BsChevronRight
-              className={cx("-right-2 carousel-btn")}
-              role="button"
-              onClick={onNext}
-            />
+              <AiOutlineArrowRight
+                className={cx("-right-2 carousel-btn")}
+                role="button"
+                onClick={onNext}
+              />
+            </div>
 
-            <div className="flex items-center gap-2 my-1">
-              <p className="">Color:</p>
-
+            <div>
+              <p className="">Select a color:</p>
               <ul className="flex items-center gap-2 h-full">
                 {variants.map((v, i) => (
                   <li key={i}>
                     <button
                       style={{ backgroundColor: v.color }}
-                      className="p-2 rounded-full border border-brand-200/50"
+                      className={cx(
+                        "p-2 rounded-full border",
+                        v.color === variant.color
+                          ? "border-2 border-brand-100"
+                          : "border-slate-300/50",
+                      )}
                       aria-label={`color: ${v.color}`}
                       onClick={() => onSel(i)}
                     />
