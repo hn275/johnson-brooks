@@ -5,19 +5,11 @@ import ProductCard from "@shop/components/ProductCard.astro";
 import Banner from "@shop/assets/banner.jpg";
 import Footer from "@layouts/footer.astro";
 import cx from "classnames";
-import { mockFetch } from "src/mock/mock";
+import type { Product } from "@schemas/index";
 
-export interface Product {
-  title: string;
-  description: string;
-  inventory: number;
-  material: string;
-  price: number;
-  src: string;
-  id?: string;
-}
-
-const data = (await mockFetch()) as Product[];
+const api = import.meta.env.API_URI;
+const response = await fetch(`${api}/`);
+const data = (await response.json()) as Product[];
 ---
 
 <Html title="Johnson and Brooks">

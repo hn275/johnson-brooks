@@ -3,20 +3,6 @@
 @tailwind utilities;
 
 @layer utilities {
-  /*
-  .form-control {
-    @apply flex flex-col;
-  }
-
-  .label {
-    @apply text-xs opacity-70 mb-1;
-  }
-
-  .input {
-    @apply p-7;
-  }
-  */
-
   .btn {
     @apply px-3 py-2 rounded-md;
     @apply flex gap-2 justify-center items-center;
@@ -31,5 +17,11 @@
     @apply border-slate-300 border;
     @apply outline-none focus:border-brand-100;
     @apply placeholder:text-sm;
+  }
+
+  .carousel-btn {
+    @apply bg-slate-50 opacity-50 rounded-full p-1 w-5 h-5 transition-all;
+    @apply group-hover:opacity-90;
+    @apply absolute top-1/2 -translate-y-1/2;
   }
 }
