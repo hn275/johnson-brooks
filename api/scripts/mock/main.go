@@ -16,14 +16,67 @@ func main() {
 	db := database.New()
 	defer db.Close()
 
-	fmt.Println("Dropping existing data")
+	fmt.Print("Dropping existing data")
 	if err := db.Drop(context.TODO()); err != nil {
 		log.Fatal(err)
 	}
 
+	fmt.Print("\tOK\n\n")
+
+	fmt.Println("Mock data:")
+
+	fmt.Printf("\tadmin")
 	createAdmin(db)
+
+	fmt.Printf("\n\thangboard")
 	createHangboard(db, "oak")
 	createHangboard(db, "hangboard")
+	createHangboard(db, "classic")
+	fmt.Printf("\tOK")
+
+	fmt.Printf("\n\tMonorail")
+	variants := map[string]string{
+		"white":      "monorail1.jpg",
+		"also white": "monorail2.jpg",
+	}
+	createMonoRails(db, variants)
+	fmt.Printf("\tOK\n")
+}
+
+func createMonoRails(db *database.Database, src map[string]string) {
+	variants := []database.ProductVariant{}
+
+	for k, v := range src {
+		f, err := os.ReadFile("./scripts/mock/" + v)
+		if err != nil {
+			log.Fatal(err)
+		}
+		image, err := img.FromBytes(f)
+		if err != nil {
+			log.Fatal(err)
+		}
+		variant := database.ProductVariant{
+			Thumbnail:     image.Base64(),
+			Variant:       k,
+			ThumbnailData: image.Bytes(),
+			Color:         "#ffffff",
+			Inventory:     uint16(len(k)),
+		}
+		variants = append(variants, variant)
+	}
+
+	product := database.Product{
+		Variants:    variants,
+		Title:       "Monorail",
+		Material:    "plastic",
+		Description: "Lorem fugit similique nesciunt soluta architecto Amet ullam quaerat velit?",
+		Price:       123,
+	}
+
+	trx := db.Collection(database.Hangboards)
+	if _, err := trx.InsertOne(context.TODO(), &product); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func createHangboard(db *database.Database, img string) {
@@ -35,12 +88,10 @@ func createHangboard(db *database.Database, img string) {
 
 	prod := buildProduct(f, img)
 	trx := db.Collection(database.Hangboards)
-	i, err := trx.InsertOne(context.TODO(), &prod)
+	_, err = trx.InsertOne(context.TODO(), &prod)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Printf("\nAdded hangboard\ntitle: %v\nid: %v\n", prod.Title, i.InsertedID)
 }
 
 func buildProduct(src []byte, title string) database.Product {
@@ -61,25 +112,24 @@ func buildProduct(src []byte, title string) database.Product {
 				Thumbnail:     image.Base64(),
 				ThumbnailData: image.Bytes(),
 				Color:         "#1e1e1e",
-				Inventory:     420,
+				Inventory:     434,
 			},
 			{
 				Variant:       "white",
 				Thumbnail:     image.Base64(),
 				ThumbnailData: image.Bytes(),
 				Color:         "#ffffff",
-				Inventory:     420,
+				Inventory:     434,
 			},
 		},
 		Title:       title,
-		Price:       69,
+		Price:       234,
 		Material:    "test",
 		Description: "Amet voluptates ipsum ea natus suscipit! Rerum unde quam dolores?",
 	}
 }
 
 func createAdmin(db *database.Database) {
-	fmt.Printf("\nMocking user\n")
 	cred := auth.Credentials{Username: "foo", Password: "bar"}
 
 	hashed, err := bcrypt.GenerateFromPassword([]byte(cred.Password), 10)
@@ -95,5 +145,10 @@ func createAdmin(db *database.Database) {
 		panic(err)
 	}
 
-	fmt.Printf("Added user\nusername: %s\npassword: %s\nid: %v\n", cred.Username, plain, result.InsertedID)
+	fmt.Print("\t\tOK - added user")
+	fmt.Printf(`
+			username: %s
+			password: %s
+			id:       %v
+		`, cred.Username, plain, result.InsertedID)
 }
