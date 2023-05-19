@@ -1,8 +1,7 @@
 ---
 import Html from "@layouts/html.astro";
-import Section from "@components/Section/section.astro";
-import { ProductCard } from "@shop/components/ProductCard/ProductCard";
 import Banner from "@shop/assets/banner.jpg";
+import ProductSection from "@modules/shop/components/ProductSection.astro";
 import Footer from "@layouts/footer.astro";
 import cx from "classnames";
 import type { Product } from "@schemas/index";
@@ -44,34 +43,8 @@ const data = (await response.json()) as Product[];
     </div>
   </header>
 
-  <Section class="my-24">
-    <h2 class="text-center text-2xl text-brand-200 italic">
-      Crafting excellence, one piece at a time.
-    </h2>
-  </Section>
-
-  <Section id="shop">
-    <h2
-      class={cx(
-        "font-semibold text-3xl text-brand-200",
-        "mb-5 mt-10 text-center",
-      )}
-    >
-      Climbing
-    </h2>
-
-    <div class={cx("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5")}>
-      {data.map((prod) => <ProductCard {...prod} client:load />)}
-    </div>
-  </Section>
-
-  <Section>
-    <h2 class="font-accent text-3xl mb-5 mt-10">Boards</h2>
-
-    <div class={cx("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5")}>
-      {data.map((prod) => <ProductCard {...prod} />)}
-    </div>
-  </Section>
+  <ProductSection title="Climbing" products={data} />
+  <ProductSection title="Boards" products={data} />
 
   <Footer />
 </Html>
