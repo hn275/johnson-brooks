@@ -1,7 +1,7 @@
 ---
 import Html from "@layouts/html.astro";
 import Section from "@components/Section/section.astro";
-import ProductCard from "@shop/components/ProductCard/ProductCard.astro";
+import { ProductCard } from "@shop/components/ProductCard/ProductCard";
 import Banner from "@shop/assets/banner.jpg";
 import Footer from "@layouts/footer.astro";
 import cx from "classnames";
@@ -61,7 +61,7 @@ const data = (await response.json()) as Product[];
     </h2>
 
     <div class={cx("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5")}>
-      {data.map((prod) => <ProductCard {...prod} />)}
+      {data.map((prod) => <ProductCard {...prod} client:load />)}
     </div>
   </Section>
 

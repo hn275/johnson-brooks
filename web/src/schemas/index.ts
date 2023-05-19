@@ -15,7 +15,6 @@ export type Product = {
 };
 
 export type ProductVariant = {
-  variant: string;
   thumbnail: string;
   color: string;
   inventory: number;

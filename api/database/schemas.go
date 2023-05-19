@@ -19,7 +19,7 @@ type Product struct {
 }
 
 type ProductVariant struct {
-	Variant       string `json:"variant" bson:"variant"`
+	// Variant       string `json:"variant" bson:"variant"`
 	Thumbnail     string `json:"thumbnail" bson:"-"` // base64 encoding of bytearray
 	ThumbnailData []byte `json:"-" bson:"thumbnail"`
 	Color         string `json:"color" bson:"color"`
