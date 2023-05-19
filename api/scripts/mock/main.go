@@ -85,6 +85,7 @@ func main() {
 	fmt.Printf("\tadmin")
 	createAdmin(db)
 
+	fmt.Printf("\tdata")
 	for _, v := range data {
 		if _, err := db.Collection(database.Hangboards).InsertOne(context.TODO(), &v); err != nil {
 			log.Fatal(err)
@@ -104,89 +105,6 @@ func getImage(i string) *img.Img {
 		log.Fatal(err)
 	}
 	return image
-}
-
-func createMonoRails(db *database.Database, src map[string]string) {
-	variants := []database.ProductVariant{}
-
-	for k, v := range src {
-		f, err := os.ReadFile("./scripts/mock/" + v)
-		if err != nil {
-			log.Fatal(err)
-		}
-		image, err := img.FromBytes(f)
-		if err != nil {
-			log.Fatal(err)
-		}
-		variant := database.ProductVariant{
-			Thumbnail:     image.Base64(),
-			ThumbnailData: image.Bytes(),
-			Color:         "#ffffff",
-			Inventory:     uint16(len(k)),
-		}
-		variants = append(variants, variant)
-	}
-
-	product := database.Product{
-		Variants:    variants,
-		Title:       "Monorail",
-		Material:    "plastic",
-		Description: "Lorem fugit similique nesciunt soluta architecto Amet ullam quaerat velit?",
-		Price:       123,
-	}
-
-	trx := db.Collection(database.Hangboards)
-	if _, err := trx.InsertOne(context.TODO(), &product); err != nil {
-		log.Fatal(err)
-	}
-}
-
-func createHangboard(db *database.Database, img string) {
-	imgSrc := fmt.Sprintf("./scripts/mock/%s.jpg", img)
-	f, err := os.ReadFile(imgSrc)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	prod := buildProduct(f, img)
-	trx := db.Collection(database.Hangboards)
-	_, err = trx.InsertOne(context.TODO(), &prod)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func buildProduct(src []byte, title string) database.Product {
-	image, err := img.FromBytes(src)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if err := image.Resize(img.Thumbnail); err != nil {
-		log.Fatal(err)
-	}
-
-	return database.Product{
-		Variants: []database.ProductVariant{
-			{
-				Thumbnail:     image.Base64(),
-				ThumbnailData: image.Bytes(),
-				Color:         "#1e1e1e",
-				Inventory:     434,
-			},
-			{
-				Thumbnail:     image.Base64(),
-				ThumbnailData: image.Bytes(),
-				Color:         "#ffffff",
-				Inventory:     434,
-			},
-		},
-		Title:       title,
-		Price:       234,
-		Material:    "test",
-		Description: "Amet voluptates ipsum ea natus suscipit! Rerum unde quam dolores?",
-	}
 }
 
 func createAdmin(db *database.Database) {
