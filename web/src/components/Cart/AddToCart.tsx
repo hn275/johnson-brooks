@@ -19,7 +19,7 @@ export function AddToCart({ productID: id, item }: Props) {
         onClick={addToCart(id, item, onToast)}
         className={cx(
           "text-brand-100 text-xs uppercase font-bold bg-inherit",
-          "flex items-center justify-center gap-1 rounded-full p-3",
+          "flex items-center justify-center gap-1 rounded-full px-4 py-3",
           "hover:brightness-110 hover:bg-brand-200/5",
           "ml-auto transition-all duration-300",
         )}
