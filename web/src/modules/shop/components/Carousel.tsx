@@ -1,41 +1,28 @@
 import { useState } from "react";
 import type { ProductVariant } from "@schemas/index";
 import cx from "classnames";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai/index";
 
 interface Props {
   variants: ProductVariant[];
 }
 
 export function Carousel({ variants }: Props) {
-  const { variant, onNext, onPrev, onSel } = useActiveVariant(variants);
+  const { variant, onSel } = useActiveVariant(variants);
   const hasVariants = variants.length > 1;
+  const outOfStock = variant.inventory === 0;
 
   return (
     <>
       <div className="relative isolate">
-        <img
-          src={`data:image/png;base64,${variant?.thumbnail}`}
-          className="w-full"
-        />
+        <div className="w-full aspect-[4/3] overflow-hidden">
+          <img
+            src={`data:image/png;base64,${variant?.thumbnail}`}
+            className="w-full overflow-hidden object-cover"
+          />
+        </div>
 
         {hasVariants && (
           <>
-            <div className="flex justify-center items-center gap-3">
-              <AiOutlineArrowLeft
-                className={cx("-left-2 carousel-btn")}
-                role="button"
-                onClick={onPrev}
-                title="previous variant"
-              />
-
-              <AiOutlineArrowRight
-                className={cx("-right-2 carousel-btn")}
-                role="button"
-                onClick={onNext}
-              />
-            </div>
-
             <div>
               <p className="">Select a color:</p>
               <ul className="flex items-center gap-2 h-full">
@@ -58,8 +45,6 @@ export function Carousel({ variants }: Props) {
             </div>
           </>
         )}
-
-        <p>Inventory: {variant.inventory}</p>
       </div>
     </>
   );
@@ -67,11 +52,8 @@ export function Carousel({ variants }: Props) {
 
 function useActiveVariant(variants: ProductVariant[]) {
   const [index, setIndex] = useState<number>(0);
-  const length = variants.length;
 
-  const onNext = () => setIndex((i) => (i + 1) % length);
-  const onPrev = () => setIndex((i) => Math.abs(i - 1) % length);
   const onSel = (i: number) => setIndex(() => i);
 
-  return { variant: variants[index]!, onNext, onPrev, onSel };
+  return { variant: variants[index]!, onSel };
 }
