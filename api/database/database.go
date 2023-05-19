@@ -11,7 +11,7 @@ import (
 
 var uri string
 
-const Timeout = 5 * time.Second
+const Timeout = 10 * time.Second
 
 const (
 	Hangboards string = "hangboards"

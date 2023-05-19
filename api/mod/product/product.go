@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"jb/database"
-	"log"
+	"jb/lib"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -14,24 +14,24 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 
 	var product []database.Product
 	if err := getAllProducts(&product); err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		lib.StdErr(err)
+		return
 	}
 
 	for i := range product {
 		if err := product[i].Serializer(); err != nil {
-			panic(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			lib.StdErr(err)
+			return
 		}
-	}
-
-	log.Println("lasjdflkjasdf")
-	for _, p := range product {
-		log.Println(p.ID)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(&product); err != nil {
-		panic(err)
+		lib.StdErr(err)
+		w.WriteHeader(http.StatusInternalServerError)
 	}
 }
 
