@@ -1,0 +1,36 @@
+---
+import type { Product } from "@schemas/index";
+import Section from "@components/Section/section.astro";
+import { ProductCard } from "@shop/components/ProductCard/ProductCard";
+import cx from "classnames";
+
+interface ProductSection {
+  title: string;
+  products: Product[];
+}
+const { title, products } = Astro.props as ProductSection;
+---
+
+<Section id="shop" class="product-section">
+  <h2>{title}</h2>
+
+  <div class={cx("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5")}>
+    {products.map((prod) => <ProductCard {...prod} client:load />)}
+  </div>
+</Section>
+
+<style>
+  .product-section h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    color: rgb(64 50 51 / var(--tw-text-opacity));
+    font-style: italic;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .product-section {
+    margin: 3rem 0;
+    padding: 0 1rem;
+  }
+</style>
