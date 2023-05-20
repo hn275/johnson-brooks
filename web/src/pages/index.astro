@@ -6,7 +6,7 @@ import Footer from "@layouts/footer.astro";
 import cx from "classnames";
 import type { Product } from "@schemas/index";
 
-const api = import.meta.env.API_URI;
+const api = import.meta.env.PUBLIC_API_URI;
 const response = await fetch(`${api}/`);
 const data = (await response.json()) as Product[];
 ---
