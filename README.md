@@ -8,6 +8,12 @@
 
 [React](https://react.dev/reference/react)
 
+### Generate env
+
+```sh
+cat env-example > .env
+```
+
 ### Commands
 
 ```sh
