@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/teris-io/shortid"
+	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -28,15 +29,30 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var user Credentials
-	err := db.findByUsername(&cred).Decode(&user)
+	var err error
+
+	trx := db.findByUsername(&cred)
+	err = trx.Err()
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		lib.NewErr("No Account Found").HandleErr(w)
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			w.WriteHeader(http.StatusNotFound)
+			lib.NewErr("Account not found").HandleErr(w)
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
+		lib.StdErr(err)
+		return
+	}
+
+	err = trx.Decode(&user)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		lib.StdErr(err)
 		return
 	}
 
 	err = authenticateUser(&cred, &user, db)
-	if err == nil {
+	if err != nil {
 		if errors.Is(err, ErrAuthFailed) {
 			w.WriteHeader(http.StatusUnauthorized)
 			lib.NewErr("Authentication failed").HandleErr(w)
